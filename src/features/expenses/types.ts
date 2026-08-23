@@ -15,6 +15,7 @@ interface ExpenseMeta {
 }
 
 export interface DailyExpense {
+  id: string;
   date: number;
   meta: ExpenseMeta;
   expenses: Expense[];
