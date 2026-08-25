@@ -15,7 +15,11 @@ export function ExpensesList() {
     if (expensesByDay.length > 0) setActiveExpenses(expensesByDay[0].id);
   }, [expensesByDay]);
 
-  const handleEdit = (id: string) => setActiveEdit(id);
+  const handleEdit = (id: string) => {
+    if (!!activeEdit) return setActiveEdit(null);
+
+    setActiveEdit(id);
+  };
 
   const cancelEdit = () => setActiveEdit(null);
 
@@ -40,7 +44,7 @@ export function ExpensesList() {
             <div className="text-sm font-bold">{`$${dailyExpenses.meta.total}`}</div>
           </div>
           <div
-            className={`${dailyExpenses.id === activeExpenses ? "max-h-250 opacity-100 pointer-events-auto" : "max-h-0 opacity-0 pointer-events-none"} transition-all duration-200`}
+          // className={`${dailyExpenses.id === activeExpenses ? "max-h-250 opacity-100 pointer-events-auto" : "max-h-0 opacity-0 pointer-events-none"} transition-all duration-200`}
           >
             {dailyExpenses.expenses.map((expense) => (
               <Fragment key={expense.id}>
