@@ -27,3 +27,19 @@ export interface GetExpensesResponse {
     raw: Expense[];
   };
 }
+
+export interface FormData {
+  amount?: number;
+  description?: string;
+  location?: string;
+  category?: string;
+  subcategory?: string;
+  account?: string;
+}
+
+export interface ExpenseFormProps {
+  expense: Expense;
+  cancelEdit: () => void;
+  isActive: boolean;
+  handleUpdate: (expenseId: string, data: FormData, expense: Expense) => void;
+}

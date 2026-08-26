@@ -18,7 +18,9 @@ export function useExpenses() {
       setExpensesByDay(expenses.groupedByDay);
     } catch (error) {
       setError(
-        error instanceof Error ? error : new Error("Failed to load expenses"),
+        error instanceof Error
+          ? error
+          : new Error("Error al cargar los gastos"),
       );
     } finally {
       setLoading(false);
@@ -29,7 +31,11 @@ export function useExpenses() {
     loadExpenses();
   }, []);
 
-  async function update(expenseId: string, data: FormData, expense: Expense) {
+  async function update(
+    expenseId: string,
+    data: FormData,
+    expense: Expense,
+  ): Promise<Boolean> {
     const newExpense: FormData = {};
 
     if (Number(data.amount) !== Number(expense.amount))
@@ -42,10 +48,23 @@ export function useExpenses() {
       newExpense.subcategory = data.subcategory;
     if (data.account !== expense.account) newExpense.account = data.account;
 
-    const updated = await updateExpense(expenseId, newExpense);
-    if (updated) loadExpenses();
+    try {
+      setLoading(true);
 
-    return updated;
+      const updated = await updateExpense(expenseId, newExpense);
+      if (updated) loadExpenses();
+
+      return updated;
+    } catch (error) {
+      setError(
+        error instanceof Error
+          ? error
+          : new Error("No se pudo actualizar el gasto"),
+      );
+      return false;
+    } finally {
+      setLoading(false);
+    }
   }
 
   return {

@@ -1,29 +1,17 @@
 import { Check, X } from "lucide-react";
-import type { Expense } from "../types";
+import type { Expense, ExpenseFormProps, FormData } from "../types";
 import {
   useState,
   type ChangeEventHandler,
   type SubmitEventHandler,
 } from "react";
 
-interface FormData {
-  amount: number;
-  description: string;
-  location: string;
-  category: string;
-  subcategory: string;
-  account: string;
-}
-
 export function ExpenseForm({
   expense,
   cancelEdit,
   isActive,
-}: {
-  expense: Expense;
-  cancelEdit: () => void;
-  isActive: boolean;
-}) {
+  handleUpdate,
+}: ExpenseFormProps) {
   const [formData, setFormData] = useState<FormData>({
     amount: expense.amount,
     description: expense.description,
@@ -44,20 +32,10 @@ export function ExpenseForm({
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit: SubmitEventHandler<HTMLFormElement> = (e) => {
+  const handleSubmit: SubmitEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
-    const newExpense: Expense = {
-      id: expense.id,
-      date: expense.date,
-      amount: formData.amount,
-      description: formData.description,
-      location: formData.location,
-      category: formData.category,
-      subcategory: formData.subcategory,
-      account: formData.account,
-    };
-    console.log(newExpense);
+    handleUpdate(expense.id, formData, expense);
   };
 
   return (
