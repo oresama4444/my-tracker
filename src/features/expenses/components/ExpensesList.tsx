@@ -2,23 +2,32 @@ import { useExpenses } from "../hooks/useExpenses";
 import { getLongDate } from "../../../lib/dates";
 import { capitalizeWord, formatCurrency } from "../../../lib/formatter";
 import { Dot, Pencil, Trash } from "lucide-react";
-import type { Expense } from "../types";
+import type { Expense, FormData } from "../types";
 import { Fragment, useEffect, useState } from "react";
 import { ExpenseForm } from "./ExpenseForm";
+import toast from "react-hot-toast";
 
 export function ExpensesList() {
-  const { expensesByDay } = useExpenses();
-  const [activeExpenses, setActiveExpenses] = useState<string | null>(null);
+  const { expensesByDay, update } = useExpenses();
+  // const [activeExpenses, setActiveExpenses] = useState<string | null>(null);
   const [activeEdit, setActiveEdit] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (expensesByDay.length > 0) setActiveExpenses(expensesByDay[0].id);
-  }, [expensesByDay]);
+  // useEffect(() => {
+  //   if (expensesByDay.length > 0) setActiveExpenses(expensesByDay[0].id);
+  // }, [expensesByDay]);
 
   const handleEdit = (id: string) => {
     if (!!activeEdit) return setActiveEdit(null);
 
     setActiveEdit(id);
+  };
+
+  const handleUpdate = async (id: string, data: FormData, expense: Expense) => {
+    const updated = await update(id, data, expense);
+
+    if (!updated) return toast.error("Error al actualizar");
+
+    toast.success("Gasto actualizado correctamente");
   };
 
   const cancelEdit = () => setActiveEdit(null);
@@ -32,7 +41,7 @@ export function ExpensesList() {
         >
           <div
             className="flex gap-2 items-center p-4 cursor-pointer"
-            onClick={() => setActiveExpenses(dailyExpenses.id)}
+            // onClick={() => setActiveExpenses(dailyExpenses.id)}
           >
             <div className="flex-1 flex items-center">
               <h2 className="text-stone-700 font-semibold">
@@ -51,6 +60,7 @@ export function ExpensesList() {
                 <ExpenseItem expense={expense} handleEdit={handleEdit} />
                 <ExpenseForm
                   expense={expense}
+                  handleUpdate={handleUpdate}
                   cancelEdit={cancelEdit}
                   isActive={expense.id === activeEdit}
                 />
