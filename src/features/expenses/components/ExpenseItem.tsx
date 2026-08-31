@@ -14,7 +14,7 @@ export function ExpenseItem({
   return (
     <div
       key={expense.id}
-      className="flex gap-8 items-center px-6 py-2 border-t border-t-stone-200"
+      className="flex gap-8 items-center px-6 py-2 border-t border-t-stone-200 bg-stone-50 rounded-xl"
     >
       <div className="flex-1">
         <h3>{expense.description && capitalizeWord(expense.description)}</h3>
