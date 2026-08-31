@@ -17,7 +17,7 @@ export function ExpensesList() {
   // }, [expensesByDay]);
 
   const handleEdit = (id: string) => {
-    if (!!activeEdit) return setActiveEdit(null);
+    if (activeEdit === id) return setActiveEdit(null);
 
     setActiveEdit(id);
   };
