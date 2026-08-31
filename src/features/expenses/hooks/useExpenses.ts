@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { DailyExpense, Expense, FormData } from "../types";
-import { getExpenses, updateExpense } from "../expenseService";
+import { deleteExpense, getExpenses, updateExpense } from "../expenseService";
 
 export function useExpenses() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
@@ -67,10 +67,29 @@ export function useExpenses() {
     }
   }
 
+  async function remove(expenseId: string): Promise<boolean> {
+    try {
+      setLoading(true);
+
+      const deleted = await deleteExpense(expenseId);
+      if (deleted) loadExpenses();
+
+      return deleted;
+    } catch (error) {
+      setError(
+        error instanceof Error ? error : new Error("No se encontró el gasto"),
+      );
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return {
     expenses,
     expensesByDay,
     update,
+    remove,
     loading,
     error,
   };
