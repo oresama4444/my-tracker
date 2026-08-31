@@ -1,5 +1,5 @@
 import { Check, X } from "lucide-react";
-import type { Expense, ExpenseFormProps, FormData } from "../types";
+import type { ExpenseFormProps, FormData } from "../types";
 import {
   useState,
   type ChangeEventHandler,
@@ -41,7 +41,7 @@ export function ExpenseForm({
   return (
     <div
       key={expense.id}
-      className={`${isActive ? "max-h-96 opacity-100 pointer-events-auto" : "max-h-0 opacity-0 pointer-events-none"} transition-all duration-200`}
+      className={`${isActive ? "max-h-96 opacity-100 pointer-events-auto" : " max-h-0 opacity-0 pointer-events-none"} transition-all duration-200 overflow-hidden`}
     >
       <form
         id="expense-form"
