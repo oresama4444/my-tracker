@@ -1,14 +1,14 @@
 import { useExpenses } from "../hooks/useExpenses";
 import { getLongDate } from "../../../lib/dates";
-import { capitalizeWord, formatCurrency } from "../../../lib/formatter";
-import { Dot, Pencil, Trash } from "lucide-react";
+import { Dot } from "lucide-react";
 import type { Expense, FormData } from "../types";
 import { Fragment, useEffect, useState } from "react";
 import { ExpenseForm } from "./ExpenseForm";
 import toast from "react-hot-toast";
+import { ExpenseItem } from "./ExpenseItem";
 
 export function ExpensesList() {
-  const { expensesByDay, update } = useExpenses();
+  const { expensesByDay, update, remove } = useExpenses();
   // const [activeExpenses, setActiveExpenses] = useState<string | null>(null);
   const [activeEdit, setActiveEdit] = useState<string | null>(null);
 
@@ -28,6 +28,14 @@ export function ExpensesList() {
     if (!updated) return toast.error("Error al actualizar");
 
     toast.success("Gasto actualizado correctamente");
+  };
+
+  const handleDelete = async (id: string) => {
+    const deleted = await remove(id);
+
+    if (!deleted) return toast.error("Error al eliminar");
+
+    toast.success("Gasto eliminado corectamente");
   };
 
   const cancelEdit = () => setActiveEdit(null);
@@ -57,7 +65,11 @@ export function ExpensesList() {
           >
             {dailyExpenses.expenses.map((expense) => (
               <Fragment key={expense.id}>
-                <ExpenseItem expense={expense} handleEdit={handleEdit} />
+                <ExpenseItem
+                  expense={expense}
+                  handleEdit={handleEdit}
+                  handleDelete={handleDelete}
+                />
                 <ExpenseForm
                   expense={expense}
                   handleUpdate={handleUpdate}
@@ -70,43 +82,5 @@ export function ExpensesList() {
         </div>
       ))}
     </section>
-  );
-}
-
-function ExpenseItem({
-  expense,
-  handleEdit,
-}: {
-  expense: Expense;
-  handleEdit: (id: string) => void;
-}) {
-  return (
-    <div
-      key={expense.id}
-      className="flex gap-8 items-center px-6 py-2 border-t border-t-stone-200"
-    >
-      <div className="flex-1">
-        <h3>{expense.description && capitalizeWord(expense.description)}</h3>
-        <div className="flex items-center text-xs text-stone-500">
-          <p>{expense.category}</p>
-          <Dot />
-          <p>{expense.subcategory}</p>
-        </div>
-      </div>
-      <div>
-        <p className="text-sm">{formatCurrency(expense.amount)}</p>
-      </div>
-      <div className="flex gap-3">
-        <button
-          onClick={() => handleEdit(expense.id)}
-          className="cursor-pointer"
-        >
-          <Pencil size={18} />
-        </button>
-        <button className="text-red-400 cursor-pointer">
-          <Trash size={18} />
-        </button>
-      </div>
-    </div>
   );
 }
