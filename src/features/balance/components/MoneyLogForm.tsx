@@ -1,6 +1,11 @@
 import { PenLine, X } from "lucide-react";
 import { getDateNTime } from "../../../lib/dates";
-import type { SubmitEventHandler } from "react";
+import {
+  useState,
+  type ChangeEventHandler,
+  type SubmitEventHandler,
+} from "react";
+import type { FormData } from "../types";
 
 export function MoneyLogForm({
   cancelForm,
@@ -9,7 +14,12 @@ export function MoneyLogForm({
   cancelForm: () => void;
   activeForm: Boolean;
 }) {
-  const date = Date.now();
+  const [formData, setFormData] = useState<FormData>({
+    date: Date.now(),
+    cash: 0,
+    account: 0,
+    payments: 0,
+  });
   const styles = {
     container: "grid grid-cols-2 items-center",
     label: "text-stone-600",
@@ -22,6 +32,11 @@ export function MoneyLogForm({
     e.preventDefault();
   };
 
+  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
   return (
     <div
       className={`${activeForm ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"} min-h-screen min-w-screen overflow-hidden absolute top-0 left-0 z-10 flex items-center justify-center bg-stone-900/30 transition-all duration-400`}
@@ -30,24 +45,45 @@ export function MoneyLogForm({
         onSubmit={handleSubmit}
         className="bg-emerald-100 p-6 flex flex-col gap-4 rounded-2xl"
       >
-        <h1 className="font-bold">{`Corte: ${getDateNTime(date)}`}</h1>
+        <h1 className="font-bold">{`Corte: ${getDateNTime(formData.date)}`}</h1>
         <div className={styles.container}>
           <label htmlFor="cash" className={styles.label}>
             Dinero en efectivo:
           </label>
-          <input id="cash" type="text" className={styles.input} />
+          <input
+            id="cash"
+            type="number"
+            className={styles.input}
+            name="cash"
+            value={formData.cash}
+            onChange={handleChange}
+          />
         </div>
         <div className={styles.container}>
           <label htmlFor="account" className={styles.label}>
             Dinero en cuenta:
           </label>
-          <input id="account" type="text" className={styles.input} />
+          <input
+            id="account"
+            type="number"
+            className={styles.input}
+            name="account"
+            value={formData.account}
+            onChange={handleChange}
+          />
         </div>
         <div className={styles.container}>
           <label htmlFor="payments" className={styles.label}>
             Pagos pendientes:
           </label>
-          <input id="payments" type="text" className={styles.input} />
+          <input
+            id="payments"
+            type="number"
+            className={styles.input}
+            name="payments"
+            value={formData.payments}
+            onChange={handleChange}
+          />
         </div>
         <div className="flex justify-end gap-2">
           <button
