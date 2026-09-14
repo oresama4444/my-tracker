@@ -51,3 +51,9 @@ export function getShortDate(timestamp: number): string {
 
   return `${capitalizeWord(monthNameShort)} ${day}`;
 }
+
+export function getDateNTime(timestamp: number): string {
+  const { monthNameFull, day, hour, minute } = formatDate(timestamp);
+
+  return `${capitalizeWord(monthNameFull)} ${day}, ${hour}:${minute}`;
+}
