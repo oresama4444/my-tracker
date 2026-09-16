@@ -8,3 +8,7 @@ export function formatCurrency(amount: number): string {
     currency: "MXN",
   }).format(amount);
 }
+
+export function cleanCurrency(currency: string): number {
+  return Number(currency.replace(/\D/g, "")) / 100;
+}

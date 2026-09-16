@@ -6,6 +6,7 @@ import {
   type SubmitEventHandler,
 } from "react";
 import type { FormData } from "../types";
+import { cleanCurrency, formatCurrency } from "../../../lib/formatter";
 
 export function MoneyLogForm({
   cancelForm,
@@ -33,7 +34,9 @@ export function MoneyLogForm({
   };
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const { name, value } = e.target;
+    const { name, value, inputMode } = e.target;
+    if (inputMode === "numeric")
+      return setFormData((prev) => ({ ...prev, [name]: cleanCurrency(value) }));
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -52,10 +55,11 @@ export function MoneyLogForm({
           </label>
           <input
             id="cash"
-            type="number"
+            type="text"
+            inputMode="numeric"
             className={styles.input}
             name="cash"
-            value={formData.cash}
+            value={formatCurrency(formData.cash)}
             onChange={handleChange}
           />
         </div>
@@ -65,10 +69,11 @@ export function MoneyLogForm({
           </label>
           <input
             id="account"
-            type="number"
+            type="text"
+            inputMode="numeric"
             className={styles.input}
             name="account"
-            value={formData.account}
+            value={formatCurrency(formData.account)}
             onChange={handleChange}
           />
         </div>
@@ -78,10 +83,11 @@ export function MoneyLogForm({
           </label>
           <input
             id="payments"
-            type="number"
+            type="text"
+            inputMode="numeric"
             className={styles.input}
             name="payments"
-            value={formData.payments}
+            value={formatCurrency(formData.payments)}
             onChange={handleChange}
           />
         </div>
