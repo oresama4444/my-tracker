@@ -7,6 +7,8 @@ import {
 } from "react";
 import type { FormData } from "../types";
 import { cleanCurrency, formatCurrency } from "../../../lib/formatter";
+import { useBalance } from "../hooks/useBalance";
+import toast from "react-hot-toast";
 
 export function MoneyLogForm({
   cancelForm,
@@ -15,6 +17,7 @@ export function MoneyLogForm({
   cancelForm: () => void;
   activeForm: boolean;
 }) {
+  const { logMoney } = useBalance();
   const [formData, setFormData] = useState<FormData>({
     date: Date.now(),
     cash: 0,
@@ -31,6 +34,13 @@ export function MoneyLogForm({
 
   const handleSubmit: SubmitEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
+
+    const created = await logMoney(formData);
+    if (!created) return toast.error("Error al registrar");
+
+    toast.success("Registro creado correctamente");
+    setFormData({ date: Date.now(), cash: 0, account: 0, payments: 0 });
+    cancelForm();
   };
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
