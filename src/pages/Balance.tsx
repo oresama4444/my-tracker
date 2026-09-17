@@ -3,7 +3,7 @@ import { useState } from "react";
 import { MoneyLogForm } from "../features/balance/components/MoneyLogForm";
 
 export function Balance() {
-  const [activeForm, setActiveForm] = useState<Boolean>(false);
+  const [activeForm, setActiveForm] = useState<boolean>(false);
 
   return (
     <div>

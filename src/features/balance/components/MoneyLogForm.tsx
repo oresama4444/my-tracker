@@ -13,7 +13,7 @@ export function MoneyLogForm({
   activeForm,
 }: {
   cancelForm: () => void;
-  activeForm: Boolean;
+  activeForm: boolean;
 }) {
   const [formData, setFormData] = useState<FormData>({
     date: Date.now(),

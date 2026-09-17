@@ -35,7 +35,7 @@ export function useExpenses() {
     expenseId: string,
     data: FormData,
     expense: Expense,
-  ): Promise<Boolean> {
+  ): Promise<boolean> {
     const newExpense: FormData = {};
 
     if (Number(data.amount) !== Number(expense.amount))
