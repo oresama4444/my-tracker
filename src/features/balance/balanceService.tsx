@@ -13,3 +13,11 @@ export async function createMoneyLog(data: FormData): Promise<boolean> {
 export async function getLogs(): Promise<GetLogsResponse> {
   return api<GetLogsResponse>("/balance");
 }
+
+export async function deleteLog(id: string): Promise<boolean> {
+  const { deleted } = await api<{ deleted: boolean }>(`/balance/${id}`, {
+    method: "DELETE",
+  });
+
+  return deleted;
+}

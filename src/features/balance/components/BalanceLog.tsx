@@ -2,9 +2,10 @@ import { Trash } from "lucide-react";
 import { getShortDate } from "../../../lib/dates";
 import { formatCurrency } from "../../../lib/formatter";
 import { useBalance } from "../hooks/useBalance";
+import toast from "react-hot-toast";
 
 export function BalanceLog() {
-  const { moneyLogs } = useBalance();
+  const { moneyLogs, removeLog } = useBalance();
 
   const calculateBalance = (cash: number, account: number): number =>
     cash + account;
@@ -14,6 +15,14 @@ export function BalanceLog() {
     account: number,
     payments: number,
   ): number => calculateBalance(cash, account) - payments;
+
+  const handleDelete = async (id: string) => {
+    const deleted = await removeLog(id);
+
+    if (!deleted) return toast.error("Error al eliminar");
+
+    toast.success("Registro eliminado corectamente");
+  };
 
   return (
     <section className="mx-auto flex flex-col items-center max-w-4xl border border-stone-300 rounded-3xl mt-4">
@@ -56,8 +65,13 @@ export function BalanceLog() {
               )}
             </span>
           </div>
-          <div className="text-red-400 cursor-pointer min-w-10 flex items-center justify-center">
-            <Trash size={18} />
+          <div className="min-w-10 flex items-center justify-center">
+            <button
+              className="text-red-400 cursor-pointer"
+              onClick={() => handleDelete(log.id)}
+            >
+              <Trash size={18} />
+            </button>
           </div>
         </div>
       ))}
