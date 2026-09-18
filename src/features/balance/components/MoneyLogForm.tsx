@@ -7,17 +7,17 @@ import {
 } from "react";
 import type { FormData } from "../types";
 import { cleanCurrency, formatCurrency } from "../../../lib/formatter";
-import { useBalance } from "../hooks/useBalance";
 import toast from "react-hot-toast";
 
 export function MoneyLogForm({
   cancelForm,
   activeForm,
+  logMoney,
 }: {
   cancelForm: () => void;
   activeForm: boolean;
+  logMoney: (data: FormData) => Promise<boolean>;
 }) {
-  const { logMoney } = useBalance();
   const [formData, setFormData] = useState<FormData>({
     date: Date.now(),
     cash: 0,

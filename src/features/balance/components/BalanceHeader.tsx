@@ -1,8 +1,13 @@
 import { Plus, WalletMinimal } from "lucide-react";
 import { MoneyLogForm } from "./MoneyLogForm";
 import { useState } from "react";
+import type { FormData } from "../types";
 
-export function BalanceHeader() {
+export function BalanceHeader({
+  logMoney,
+}: {
+  logMoney: (data: FormData) => Promise<boolean>;
+}) {
   const [activeForm, setActiveForm] = useState<boolean>(false);
 
   return (
@@ -29,6 +34,7 @@ export function BalanceHeader() {
       <MoneyLogForm
         cancelForm={() => setActiveForm(false)}
         activeForm={activeForm}
+        logMoney={logMoney}
       />
     </header>
   );

@@ -34,6 +34,7 @@ export function useBalance() {
       setLoading(true);
 
       const created = await createMoneyLog(data);
+      if (created) loadLogs();
 
       return created;
     } catch (error) {

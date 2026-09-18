@@ -1,12 +1,16 @@
 import { Trash } from "lucide-react";
 import { getShortDate } from "../../../lib/dates";
 import { formatCurrency } from "../../../lib/formatter";
-import { useBalance } from "../hooks/useBalance";
 import toast from "react-hot-toast";
+import type { MoneyLog } from "../types";
 
-export function BalanceLog() {
-  const { moneyLogs, removeLog } = useBalance();
-
+export function BalanceLog({
+  moneyLogs,
+  removeLog,
+}: {
+  moneyLogs: MoneyLog[];
+  removeLog: (id: string) => Promise<boolean>;
+}) {
   const calculateBalance = (cash: number, account: number): number =>
     cash + account;
 
