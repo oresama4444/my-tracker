@@ -52,7 +52,7 @@ export function MoneyLogForm({
 
   return (
     <div
-      className={`${activeForm ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"} min-h-screen min-w-screen overflow-hidden absolute top-0 left-0 z-10 flex items-center justify-center bg-stone-900/30 transition-all duration-400`}
+      className={`${activeForm ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"} min-h-screen min-w-full overflow-hidden absolute top-0 left-0 z-10 flex items-center justify-center bg-stone-900/30 transition-all duration-400`}
     >
       <form
         onSubmit={handleSubmit}
