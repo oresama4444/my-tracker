@@ -12,3 +12,7 @@ export interface FormData {
   account: number;
   payments: number;
 }
+
+export interface GetLogsResponse {
+  moneyLogs: MoneyLog[];
+}
