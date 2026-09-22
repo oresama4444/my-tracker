@@ -30,7 +30,7 @@ function formatDate(timestamp: number) {
 
   return {
     day: String(date.getDate()).padStart(2, "0"),
-    monthDay: String(date.getMonth() + 1).padStart(2, "0"),
+    month: String(date.getMonth() + 1).padStart(2, "0"),
     monthNameFull: months[date.getMonth()],
     monthNameShort: months[date.getMonth()].slice(0, 3),
     year: String(date.getFullYear()),
@@ -59,9 +59,9 @@ export function getDateNTime(timestamp: number): string {
 }
 
 export function formatDatetimeInput(timestamp: number): string {
-  const { year, monthDay, day, hour, minute } = formatDate(timestamp);
+  const { year, month, day, hour, minute } = formatDate(timestamp);
 
-  return `${year}-${monthDay}-${day}T${hour}:${minute}`;
+  return `${year}-${month}-${day}T${hour}:${minute}`;
 }
 
 export function cleanDatetimeInput(datetime: string): number {
