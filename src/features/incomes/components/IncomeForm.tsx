@@ -7,13 +7,19 @@ import {
 import { cleanDatetimeInput, formatDatetimeInput } from "../../../lib/dates";
 import { cleanCurrency, formatCurrency } from "../../../lib/formatter";
 import type { NewIncomeFormData } from "../types";
+import toast from "react-hot-toast";
 
 interface IncomeFormProps {
   cancelForm: () => void;
   activeForm: boolean;
+  addIncome: (data: NewIncomeFormData) => Promise<boolean>;
 }
 
-export function IncomeForm({ cancelForm, activeForm }: IncomeFormProps) {
+export function IncomeForm({
+  cancelForm,
+  activeForm,
+  addIncome,
+}: IncomeFormProps) {
   const [formData, setFormData] = useState<NewIncomeFormData>({
     date: Date.now(),
     amount: 0,
@@ -31,6 +37,13 @@ export function IncomeForm({ cancelForm, activeForm }: IncomeFormProps) {
 
   const handleSubmit: SubmitEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
+
+    const created = await addIncome(formData);
+    if (!created) return toast.error("Error al agregar ingreso");
+
+    toast.success("Registro creado correctamente");
+    setFormData({ date: Date.now(), amount: 0, description: "", category: "" });
+    cancelForm();
   };
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {

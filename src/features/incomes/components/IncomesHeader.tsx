@@ -1,8 +1,13 @@
 import { BanknoteArrowDown, Plus } from "lucide-react";
 import { useState } from "react";
 import { IncomeForm } from "./IncomeForm";
+import type { NewIncomeFormData } from "../types";
 
-export function IncomesHeader() {
+interface IncomesHeaderProps {
+  addIncome: (data: NewIncomeFormData) => Promise<boolean>;
+}
+
+export function IncomesHeader({ addIncome }: IncomesHeaderProps) {
   const [activeForm, setActiveForm] = useState<boolean>(false);
 
   return (
@@ -29,6 +34,7 @@ export function IncomesHeader() {
       <IncomeForm
         cancelForm={() => setActiveForm(false)}
         activeForm={activeForm}
+        addIncome={addIncome}
       />
     </header>
   );
