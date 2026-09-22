@@ -6,6 +6,7 @@ import {
 } from "react";
 import { cleanDatetimeInput, formatDatetimeInput } from "../../../lib/dates";
 import { cleanCurrency, formatCurrency } from "../../../lib/formatter";
+import type { NewIncomeFormData } from "../types";
 
 interface IncomeFormProps {
   cancelForm: () => void;
@@ -13,7 +14,7 @@ interface IncomeFormProps {
 }
 
 export function IncomeForm({ cancelForm, activeForm }: IncomeFormProps) {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<NewIncomeFormData>({
     date: Date.now(),
     amount: 0,
     description: "",
