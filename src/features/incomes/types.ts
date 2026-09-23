@@ -6,8 +6,23 @@ export interface Income {
   category?: string;
 }
 
+interface DailyIncomeMeta {
+  count: number;
+  total: number;
+}
+
+export interface DailyIncome {
+  id: string;
+  date: number;
+  meta: DailyIncomeMeta;
+  expenses: Income[];
+}
+
 export interface GetIncomesResponse {
-  incomes: Income[];
+  incomes: {
+    raw: Income[];
+    groupedByDay: DailyIncome[];
+  };
 }
 
 export interface CreateIncomeResponse {

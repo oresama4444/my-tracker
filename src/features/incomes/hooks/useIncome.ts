@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { createIncome, getIncomes } from "../incomeService";
-import type { Income, NewIncomeFormData } from "../types";
+import type { DailyIncome, Income, NewIncomeFormData } from "../types";
 
 export function useIncome() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const [incomes, setIncomes] = useState<Income[]>([]);
+  const [incomesByDay, setIncomesByDay] = useState<DailyIncome[]>([]);
 
   async function loadIncomes() {
     try {
@@ -13,7 +14,8 @@ export function useIncome() {
 
       const { incomes } = await getIncomes();
 
-      setIncomes(incomes);
+      setIncomes(incomes.raw);
+      setIncomesByDay(incomes.groupedByDay);
     } catch (error) {
       setError(
         error instanceof Error
@@ -49,6 +51,7 @@ export function useIncome() {
 
   return {
     incomes,
+    incomesByDay,
     addIncome,
     loading,
     error,
