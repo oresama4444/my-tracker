@@ -3,16 +3,22 @@ import { getDateNTime, getLongDate } from "../../../lib/dates";
 import type { DailyIncome, Income } from "../types";
 import { Fragment } from "react/jsx-runtime";
 import { capitalizeWord, formatCurrency } from "../../../lib/formatter";
+import toast from "react-hot-toast";
 
 interface IncomesListProps {
   incomesByDay: DailyIncome[];
+  removeIncome: (id: string) => Promise<boolean>;
 }
 
-const handleDelete = (id: string) => {
-  id;
-};
+export function IncomesList({ incomesByDay, removeIncome }: IncomesListProps) {
+  const handleDelete = async (id: string) => {
+    const deleted = await removeIncome(id);
 
-export function IncomesList({ incomesByDay }: IncomesListProps) {
+    if (!deleted) return toast.error("Error al eliminar");
+
+    toast.success("Gasto eliminado corectamente");
+  };
+
   return (
     <section className="mx-auto flex flex-col items-center max-w-4xl border border-stone-300 rounded-2xl">
       <div className="w-full py-2 px-4 border-b border-stone-300">
