@@ -15,7 +15,7 @@ export interface DailyIncome {
   id: string;
   date: number;
   meta: DailyIncomeMeta;
-  expenses: Income[];
+  incomes: Income[];
 }
 
 export interface GetIncomesResponse {
