@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { createIncome, getIncomes } from "../incomeService";
+import { createIncome, deleteIncome, getIncomes } from "../incomeService";
 import type { DailyIncome, Income, NewIncomeFormData } from "../types";
 
 export function useIncome() {
@@ -49,10 +49,29 @@ export function useIncome() {
     }
   }
 
+  async function removeIncome(incomeId: string): Promise<boolean> {
+    try {
+      setLoading(true);
+
+      const deleted = await deleteIncome(incomeId);
+      if (deleted) loadIncomes();
+
+      return deleted;
+    } catch (error) {
+      setError(
+        error instanceof Error ? error : new Error("No se encontró el gasto"),
+      );
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return {
     incomes,
     incomesByDay,
     addIncome,
+    removeIncome,
     loading,
     error,
   };

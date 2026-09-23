@@ -29,6 +29,10 @@ export interface CreateIncomeResponse {
   created: boolean;
 }
 
+export interface DeleteIncomeResponse {
+  deleted: boolean;
+}
+
 export interface NewIncomeFormData {
   date: number;
   amount: number;
