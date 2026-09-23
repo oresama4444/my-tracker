@@ -63,7 +63,7 @@ export function ExpensesList() {
           <div
           // className={`${dailyExpenses.id === activeExpenses ? "max-h-250 opacity-100 pointer-events-auto" : "max-h-0 opacity-0 pointer-events-none"} transition-all duration-200`}
           >
-            {dailyExpenses.expenses.map((expense) => (
+            {dailyExpenses.transactions.map((expense) => (
               <Fragment key={expense.id}>
                 <ExpenseItem
                   expense={expense}

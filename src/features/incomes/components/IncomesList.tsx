@@ -37,7 +37,7 @@ export function IncomesList({ incomesByDay, removeIncome }: IncomesListProps) {
             <div className="text-sm font-bold font-mono text-green-700">{`$${dailyIncome.meta.total}`}</div>
           </div>
           <div>
-            {dailyIncome.incomes.map((income) => (
+            {dailyIncome.transactions.map((income) => (
               <Fragment key={income.id}>
                 <IncomeItem
                   income={income}
