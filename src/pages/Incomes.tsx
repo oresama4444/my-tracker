@@ -6,7 +6,7 @@ export function Incomes() {
   const { addIncome, incomesByDay, removeIncome } = useIncome();
 
   return (
-    <div className="min-h-screen bg-stone-50">
+    <div className="min-h-screen mt-2 bg-stone-50">
       <IncomesHeader addIncome={addIncome} />
       <IncomesList incomesByDay={incomesByDay} removeIncome={removeIncome} />
     </div>

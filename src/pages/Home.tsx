@@ -1,3 +1,3 @@
 export function Home() {
-  return <div className="min-h-screen bg-stone-50"></div>;
+  return <div className="min-h-screen mt-2 bg-stone-50"></div>;
 }

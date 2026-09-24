@@ -6,7 +6,7 @@ export function Balance() {
   const { logMoney, moneyLogs, removeLog } = useBalance();
 
   return (
-    <div className="min-h-screen bg-stone-50">
+    <div className="min-h-screen mt-2 bg-stone-50">
       <BalanceHeader logMoney={logMoney} />
       <BalanceLog moneyLogs={moneyLogs} removeLog={removeLog} />
     </div>

@@ -34,7 +34,7 @@ export function Header() {
   };
 
   return (
-    <header className="flex justify-between w-full py-4 px-5 lg:px-20 bg-white shadow-md">
+    <header className="flex justify-between w-full py-4 px-5 lg:px-20 bg-white shadow-lg">
       <div>
         <div className="bg-amber-200 text-amber-600 rounded-4xl p-2">
           <Crown />
