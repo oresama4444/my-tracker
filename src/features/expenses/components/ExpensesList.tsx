@@ -1,20 +1,17 @@
-import { useExpenses } from "../hooks/useExpenses";
+import { Fragment, useState } from "react";
+import type { Expense, ExpensesListProps, FormData } from "../types";
 import { getLongDate } from "../../../lib/dates";
-import { Dot } from "lucide-react";
-import type { Expense, FormData } from "../types";
-import { Fragment, useEffect, useState } from "react";
 import { ExpenseForm } from "./ExpenseForm";
-import toast from "react-hot-toast";
 import { ExpenseItem } from "./ExpenseItem";
+import { Dot } from "lucide-react";
+import toast from "react-hot-toast";
 
-export function ExpensesList() {
-  const { expensesByDay, update, remove } = useExpenses();
-  // const [activeExpenses, setActiveExpenses] = useState<string | null>(null);
+export function ExpensesList({
+  expensesByDay,
+  update,
+  remove,
+}: ExpensesListProps) {
   const [activeEdit, setActiveEdit] = useState<string | null>(null);
-
-  // useEffect(() => {
-  //   if (expensesByDay.length > 0) setActiveExpenses(expensesByDay[0].id);
-  // }, [expensesByDay]);
 
   const handleEdit = (id: string) => {
     if (activeEdit === id) return setActiveEdit(null);
@@ -47,10 +44,7 @@ export function ExpensesList() {
           key={dailyExpenses.id}
           className="w-full bg-stone-100 border border-stone-300 rounded-xl"
         >
-          <div
-            className="flex gap-2 items-center p-4 cursor-pointer"
-            // onClick={() => setActiveExpenses(dailyExpenses.id)}
-          >
+          <div className="flex gap-2 items-center p-4">
             <div className="flex-1 flex items-center">
               <h2 className="text-stone-700 font-semibold">
                 {getLongDate(dailyExpenses.date)}
@@ -60,9 +54,7 @@ export function ExpensesList() {
             </div>
             <div className="text-sm font-bold">{`$${dailyExpenses.meta.total}`}</div>
           </div>
-          <div
-          // className={`${dailyExpenses.id === activeExpenses ? "max-h-250 opacity-100 pointer-events-auto" : "max-h-0 opacity-0 pointer-events-none"} transition-all duration-200`}
-          >
+          <div>
             {dailyExpenses.transactions.map((expense) => (
               <Fragment key={expense.id}>
                 <ExpenseItem

@@ -1,16 +1,12 @@
-import { Dot, Pencil, Trash } from "lucide-react";
+import type { ExpenseItemProps } from "../types";
 import { capitalizeWord, formatCurrency } from "../../../lib/formatter";
-import type { Expense } from "../types";
+import { Dot, Pencil, Trash } from "lucide-react";
 
 export function ExpenseItem({
   expense,
   handleEdit,
   handleDelete,
-}: {
-  expense: Expense;
-  handleEdit: (id: string) => void;
-  handleDelete: (id: string) => void;
-}) {
+}: ExpenseItemProps) {
   return (
     <div
       key={expense.id}
