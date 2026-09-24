@@ -53,7 +53,7 @@ export interface ExpenseItemProps {
   handleDelete: (id: string) => void;
 }
 
-export interface ExpenseFormProps {
+export interface UpdateExpenseFormProps {
   expense: Expense;
   cancelEdit: () => void;
   isActive: boolean;

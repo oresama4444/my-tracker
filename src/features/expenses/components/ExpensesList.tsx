@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
 import type { Expense, ExpensesListProps, FormData } from "../types";
 import { getLongDate } from "../../../lib/dates";
-import { ExpenseForm } from "./ExpenseForm";
+import { UpdateExpenseForm } from "./UpdateExpenseForm";
 import { ExpenseItem } from "./ExpenseItem";
 import { Dot } from "lucide-react";
 import toast from "react-hot-toast";
@@ -62,7 +62,7 @@ export function ExpensesList({
                   handleEdit={handleEdit}
                   handleDelete={handleDelete}
                 />
-                <ExpenseForm
+                <UpdateExpenseForm
                   expense={expense}
                   handleUpdate={handleUpdate}
                   cancelEdit={cancelEdit}
