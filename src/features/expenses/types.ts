@@ -28,7 +28,17 @@ export interface GetExpensesResponse {
   };
 }
 
-export interface FormData {
+export interface NewExpenseFormData {
+  date: number;
+  amount: number;
+  description: string;
+  location?: string;
+  category?: string;
+  subcategory?: string;
+  account?: string;
+}
+
+export interface ExpenseUpdateFormData {
   amount?: number;
   description?: string;
   location?: string;
@@ -41,7 +51,7 @@ export interface ExpensesListProps {
   expensesByDay: DailyExpense[];
   update: (
     expenseId: string,
-    data: FormData,
+    data: ExpenseUpdateFormData,
     expense: Expense,
   ) => Promise<boolean>;
   remove: (expenseId: string) => Promise<boolean>;
@@ -57,5 +67,9 @@ export interface UpdateExpenseFormProps {
   expense: Expense;
   cancelEdit: () => void;
   isActive: boolean;
-  handleUpdate: (expenseId: string, data: FormData, expense: Expense) => void;
+  handleUpdate: (
+    expenseId: string,
+    data: ExpenseUpdateFormData,
+    expense: Expense,
+  ) => void;
 }

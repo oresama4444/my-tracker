@@ -1,5 +1,9 @@
 import { api } from "../../lib/api";
-import type { FormData, GetExpensesResponse } from "./types";
+import type {
+  ExpenseUpdateFormData,
+  GetExpensesResponse,
+  NewExpenseFormData,
+} from "./types";
 
 export function getExpenses(): Promise<GetExpensesResponse> {
   return api<GetExpensesResponse>("/expenses");
@@ -7,7 +11,7 @@ export function getExpenses(): Promise<GetExpensesResponse> {
 
 export async function updateExpense(
   id: string,
-  data: FormData,
+  data: ExpenseUpdateFormData,
 ): Promise<boolean> {
   const { updated } = await api<{ updated: boolean }>(`/expenses/${id}`, {
     method: "PATCH",
@@ -23,4 +27,15 @@ export async function deleteExpense(id: string): Promise<boolean> {
   });
 
   return deleted;
+}
+
+export async function createExpense(
+  data: NewExpenseFormData,
+): Promise<boolean> {
+  const { created } = await api<{ created: boolean }>("/expenses", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+
+  return created;
 }

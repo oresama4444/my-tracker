@@ -1,6 +1,16 @@
 import { useEffect, useState } from "react";
-import type { DailyExpense, Expense, FormData } from "../types";
-import { deleteExpense, getExpenses, updateExpense } from "../expenseService";
+import type {
+  DailyExpense,
+  Expense,
+  ExpenseUpdateFormData,
+  NewExpenseFormData,
+} from "../types";
+import {
+  createExpense,
+  deleteExpense,
+  getExpenses,
+  updateExpense,
+} from "../expenseService";
 
 export function useExpenses() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
@@ -33,10 +43,10 @@ export function useExpenses() {
 
   async function update(
     expenseId: string,
-    data: FormData,
+    data: ExpenseUpdateFormData,
     expense: Expense,
   ): Promise<boolean> {
-    const newExpense: FormData = {};
+    const newExpense: ExpenseUpdateFormData = {};
 
     if (Number(data.amount) !== Number(expense.amount))
       newExpense.amount = Number(data.amount);
@@ -85,11 +95,30 @@ export function useExpenses() {
     }
   }
 
+  async function add(data: NewExpenseFormData): Promise<boolean> {
+    try {
+      setLoading(true);
+
+      const created = await createExpense(data);
+      if (created) loadExpenses();
+
+      return created;
+    } catch (error) {
+      setError(
+        error instanceof Error ? error : new Error("No se pudo crear el gasto"),
+      );
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return {
     expenses,
     expensesByDay,
     update,
     remove,
+    add,
     loading,
     error,
   };
