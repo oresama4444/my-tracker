@@ -5,10 +5,15 @@ import type { Income } from "../types";
 
 interface IncomeItemProps {
   income: Income;
+  handleEdit: (id: string) => void;
   handleDelete: (id: string) => void;
 }
 
-export function IncomeItem({ income, handleDelete }: IncomeItemProps) {
+export function IncomeItem({
+  income,
+  handleEdit,
+  handleDelete,
+}: IncomeItemProps) {
   return (
     <div
       key={income.id}
@@ -38,7 +43,7 @@ export function IncomeItem({ income, handleDelete }: IncomeItemProps) {
       </div>
       <div className="flex gap-3">
         <button
-          // onClick={() => handleEdit(income.id)}
+          onClick={() => handleEdit(income.id)}
           className="cursor-pointer text-stone-400"
         >
           <Pencil size={16} />

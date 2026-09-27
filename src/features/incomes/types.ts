@@ -40,6 +40,13 @@ export interface NewIncomeFormData {
   category?: string;
 }
 
+export interface UpdateIncomeFormData {
+  date?: number;
+  amount?: number;
+  description?: string;
+  category?: string;
+}
+
 export interface IncomesHeaderProps {
   addIncome: (data: NewIncomeFormData) => Promise<boolean>;
 }

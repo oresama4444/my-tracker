@@ -3,6 +3,8 @@ import type { DailyIncome } from "../types";
 import { Fragment } from "react/jsx-runtime";
 import toast from "react-hot-toast";
 import { IncomeItem } from "./IncomeItem";
+import { UpdateIncomeForm } from "./UpdateIncomeForm";
+import { useState } from "react";
 
 interface IncomesListProps {
   incomesByDay: DailyIncome[];
@@ -10,6 +12,14 @@ interface IncomesListProps {
 }
 
 export function IncomesList({ incomesByDay, removeIncome }: IncomesListProps) {
+  const [activeEdit, setActiveEdit] = useState<string | null>(null);
+
+  const handleEdit = (id: string) => {
+    if (activeEdit === id) return setActiveEdit(null);
+
+    setActiveEdit(id);
+  };
+
   const handleDelete = async (id: string) => {
     const deleted = await removeIncome(id);
 
@@ -40,15 +50,15 @@ export function IncomesList({ incomesByDay, removeIncome }: IncomesListProps) {
               <Fragment key={income.id}>
                 <IncomeItem
                   income={income}
-                  //   handleEdit={handleEdit}
+                  handleEdit={handleEdit}
                   handleDelete={handleDelete}
                 />
-                {/* <Form
+                <UpdateIncomeForm
                   income={income}
-                  handleUpdate={handleUpdate}
-                  cancelEdit={cancelEdit}
+                  // handleUpdate={handleUpdate}
+                  cancelEdit={() => setActiveEdit(null)}
                   isActive={income.id === activeEdit}
-                /> */}
+                />
               </Fragment>
             ))}
           </div>
