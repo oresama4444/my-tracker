@@ -3,11 +3,11 @@ import { ExpensesList } from "../features/expenses/components/ExpensesList";
 import { useExpenses } from "../features/expenses/hooks/useExpenses";
 
 export function Expenses() {
-  const { expensesByDay, update, remove } = useExpenses();
+  const { expensesByDay, update, remove, add } = useExpenses();
 
   return (
     <div className="min-h-screen mt-2 bg-stone-50">
-      <ExpensesHeader />
+      <ExpensesHeader add={add} />
       <ExpensesList
         expensesByDay={expensesByDay}
         update={update}
