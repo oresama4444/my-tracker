@@ -1,5 +1,9 @@
 import { Fragment, useState } from "react";
-import type { Expense, ExpensesListProps, FormData } from "../types";
+import type {
+  Expense,
+  ExpensesListProps,
+  ExpenseUpdateFormData,
+} from "../types";
 import { getLongDate } from "../../../lib/dates";
 import { UpdateExpenseForm } from "./UpdateExpenseForm";
 import { ExpenseItem } from "./ExpenseItem";
@@ -19,7 +23,11 @@ export function ExpensesList({
     setActiveEdit(id);
   };
 
-  const handleUpdate = async (id: string, data: FormData, expense: Expense) => {
+  const handleUpdate = async (
+    id: string,
+    data: ExpenseUpdateFormData,
+    expense: Expense,
+  ) => {
     const updated = await update(id, data, expense);
 
     if (!updated) return toast.error("Error al actualizar");

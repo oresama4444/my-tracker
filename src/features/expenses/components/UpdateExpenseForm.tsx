@@ -1,5 +1,5 @@
 import { Check, X } from "lucide-react";
-import type { UpdateExpenseFormProps, FormData } from "../types";
+import type { ExpenseUpdateFormData, UpdateExpenseFormProps } from "../types";
 import {
   useState,
   type ChangeEventHandler,
@@ -12,7 +12,7 @@ export function UpdateExpenseForm({
   isActive,
   handleUpdate,
 }: UpdateExpenseFormProps) {
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<ExpenseUpdateFormData>({
     amount: expense.amount,
     description: expense.description,
     location: expense.location ? expense.location : "",
