@@ -39,3 +39,13 @@ export interface NewIncomeFormData {
   description: string;
   category?: string;
 }
+
+export interface IncomesHeaderProps {
+  addIncome: (data: NewIncomeFormData) => Promise<boolean>;
+}
+
+export interface NewIncomeFormProps {
+  cancelForm: () => void;
+  activeForm: boolean;
+  addIncome: (data: NewIncomeFormData) => Promise<boolean>;
+}

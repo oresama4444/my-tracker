@@ -1,25 +1,19 @@
-import { PenLine, X } from "lucide-react";
 import {
   useState,
   type ChangeEventHandler,
   type SubmitEventHandler,
 } from "react";
+import type { NewIncomeFormData, NewIncomeFormProps } from "../types";
 import { cleanDatetimeInput, formatDatetimeInput } from "../../../lib/dates";
 import { cleanCurrency, formatCurrency } from "../../../lib/formatter";
-import type { NewIncomeFormData } from "../types";
+import { PenLine, X } from "lucide-react";
 import toast from "react-hot-toast";
 
-interface IncomeFormProps {
-  cancelForm: () => void;
-  activeForm: boolean;
-  addIncome: (data: NewIncomeFormData) => Promise<boolean>;
-}
-
-export function IncomeForm({
+export function NewIncomeForm({
   cancelForm,
   activeForm,
   addIncome,
-}: IncomeFormProps) {
+}: NewIncomeFormProps) {
   const [formData, setFormData] = useState<NewIncomeFormData>({
     date: Date.now(),
     amount: 0,
