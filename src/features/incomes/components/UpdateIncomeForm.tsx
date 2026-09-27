@@ -1,25 +1,16 @@
-// import type { Income, UpdateIncomeFormData } from "../types";
-
-import { Check, X } from "lucide-react";
-import { useState, type ChangeEventHandler } from "react";
-import type { Income, UpdateIncomeFormData } from "../types";
+import {
+  useState,
+  type ChangeEventHandler,
+  type SubmitEventHandler,
+} from "react";
+import type { UpdateIncomeFormData, UpdateIncomeFormProps } from "../types";
 import { cleanDatetimeInput, formatDatetimeInput } from "../../../lib/dates";
 import { cleanCurrency, formatCurrency } from "../../../lib/formatter";
-
-interface UpdateIncomeFormProps {
-  income: Income;
-  //   handleUpdate: (
-  //     id: string,
-  //     data: UpdateIncomeFormData,
-  //     income: Income,
-  //   ) => void;
-  cancelEdit: () => void;
-  isActive: boolean;
-}
+import { Check, X } from "lucide-react";
 
 export function UpdateIncomeForm({
   income,
-  //   handleUpdate,
+  handleUpdate,
   cancelEdit,
   isActive,
 }: UpdateIncomeFormProps) {
@@ -47,6 +38,12 @@ export function UpdateIncomeForm({
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleSubmit: SubmitEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+
+    handleUpdate(income.id, formData, income);
+  };
+
   const styles = {
     container: "flex flex-col gap-1",
     label: "text-sm text-stone-700",
@@ -63,7 +60,7 @@ export function UpdateIncomeForm({
       <form
         id="expense-form"
         className="grid grid-cols-2 gap-4 px-6 py-2 "
-        // onSubmit={handleSubmit}
+        onSubmit={handleSubmit}
       >
         <div className={styles.container}>
           <label htmlFor="date" className={styles.label}>

@@ -56,3 +56,24 @@ export interface NewIncomeFormProps {
   activeForm: boolean;
   addIncome: (data: NewIncomeFormData) => Promise<boolean>;
 }
+
+export interface IncomesListProps {
+  incomesByDay: DailyIncome[];
+  removeIncome: (id: string) => Promise<boolean>;
+  editIncome: (
+    incomeId: string,
+    data: UpdateIncomeFormData,
+    income: Income,
+  ) => Promise<boolean>;
+}
+
+export interface UpdateIncomeFormProps {
+  income: Income;
+  handleUpdate: (
+    id: string,
+    data: UpdateIncomeFormData,
+    income: Income,
+  ) => void;
+  cancelEdit: () => void;
+  isActive: boolean;
+}

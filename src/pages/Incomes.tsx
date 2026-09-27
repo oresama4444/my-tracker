@@ -3,12 +3,16 @@ import { IncomesList } from "../features/incomes/components/IncomesList";
 import { useIncome } from "../features/incomes/hooks/useIncome";
 
 export function Incomes() {
-  const { addIncome, incomesByDay, removeIncome } = useIncome();
+  const { addIncome, incomesByDay, removeIncome, editIncome } = useIncome();
 
   return (
     <div className="min-h-screen mt-2 bg-stone-50">
       <IncomesHeader addIncome={addIncome} />
-      <IncomesList incomesByDay={incomesByDay} removeIncome={removeIncome} />
+      <IncomesList
+        incomesByDay={incomesByDay}
+        removeIncome={removeIncome}
+        editIncome={editIncome}
+      />
     </div>
   );
 }

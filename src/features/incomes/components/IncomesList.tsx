@@ -1,17 +1,16 @@
-import { getLongDate } from "../../../lib/dates";
-import type { DailyIncome } from "../types";
+import { useState } from "react";
 import { Fragment } from "react/jsx-runtime";
-import toast from "react-hot-toast";
+import type { Income, IncomesListProps, UpdateIncomeFormData } from "../types";
+import { getLongDate } from "../../../lib/dates";
 import { IncomeItem } from "./IncomeItem";
 import { UpdateIncomeForm } from "./UpdateIncomeForm";
-import { useState } from "react";
+import toast from "react-hot-toast";
 
-interface IncomesListProps {
-  incomesByDay: DailyIncome[];
-  removeIncome: (id: string) => Promise<boolean>;
-}
-
-export function IncomesList({ incomesByDay, removeIncome }: IncomesListProps) {
+export function IncomesList({
+  incomesByDay,
+  removeIncome,
+  editIncome,
+}: IncomesListProps) {
   const [activeEdit, setActiveEdit] = useState<string | null>(null);
 
   const handleEdit = (id: string) => {
@@ -26,6 +25,18 @@ export function IncomesList({ incomesByDay, removeIncome }: IncomesListProps) {
     if (!deleted) return toast.error("Error al eliminar");
 
     toast.success("Gasto eliminado corectamente");
+  };
+
+  const handleUpdate = async (
+    id: string,
+    data: UpdateIncomeFormData,
+    expense: Income,
+  ) => {
+    const updated = await editIncome(id, data, expense);
+
+    if (!updated) return toast.error("Error al actualizar");
+
+    toast.success("Ingreso actualizado correctamente");
   };
 
   return (
@@ -55,7 +66,7 @@ export function IncomesList({ incomesByDay, removeIncome }: IncomesListProps) {
                 />
                 <UpdateIncomeForm
                   income={income}
-                  // handleUpdate={handleUpdate}
+                  handleUpdate={handleUpdate}
                   cancelEdit={() => setActiveEdit(null)}
                   isActive={income.id === activeEdit}
                 />
