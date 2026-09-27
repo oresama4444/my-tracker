@@ -59,7 +59,10 @@ export function getDateNTime(timestamp: number, monthLength?: "short"): string {
   return `${capitalizeWord(monthLength === "short" ? monthNameShort : monthNameFull)} ${day}, ${hour}:${minute}`;
 }
 
-export function formatDatetimeInput(timestamp: number): string {
+export function formatDatetimeInput(
+  timestamp: number | undefined,
+): string | undefined {
+  if (timestamp === undefined) return;
   const { year, month, day, hour, minute } = formatDate(timestamp);
 
   return `${year}-${month}-${day}T${hour}:${minute}`;
