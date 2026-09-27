@@ -4,6 +4,7 @@ import type {
   DeleteIncomeResponse,
   GetIncomesResponse,
   NewIncomeFormData,
+  UpdateIncomeFormData,
 } from "./types";
 
 export function getIncomes(): Promise<GetIncomesResponse> {
@@ -25,4 +26,16 @@ export async function deleteIncome(id: string): Promise<boolean> {
   });
 
   return deleted;
+}
+
+export async function updateIncome(
+  id: string,
+  data: UpdateIncomeFormData,
+): Promise<boolean> {
+  const { updated } = await api<{ updated: boolean }>(`/incomes/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify(data),
+  });
+
+  return updated;
 }
