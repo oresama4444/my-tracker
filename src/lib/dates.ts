@@ -29,14 +29,14 @@ function formatDate(timestamp: number) {
   const date = new Date(timestamp);
 
   return {
-    day: String(date.getUTCDate()).padStart(2, "0"),
-    month: String(date.getUTCMonth() + 1).padStart(2, "0"),
-    monthNameFull: months[date.getUTCMonth()],
-    monthNameShort: months[date.getUTCMonth()].slice(0, 3),
-    year: String(date.getUTCFullYear()),
-    weekday: String(days[date.getUTCDay()]),
-    hour: String(date.getUTCHours()).padStart(2, "0"),
-    minute: String(date.getUTCMinutes()).padStart(2, "0"),
+    day: String(date.getDate()).padStart(2, "0"),
+    month: String(date.getMonth() + 1).padStart(2, "0"),
+    monthNameFull: months[date.getMonth()],
+    monthNameShort: months[date.getMonth()].slice(0, 3),
+    year: String(date.getFullYear()),
+    weekday: String(days[date.getDay()]),
+    hour: String(date.getHours()).padStart(2, "0"),
+    minute: String(date.getMinutes()).padStart(2, "0"),
   };
 }
 
