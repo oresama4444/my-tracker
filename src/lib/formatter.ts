@@ -1,9 +1,11 @@
-export function capitalizeWord(word: string): string {
+export function capitalizeWord(word: string | undefined): string {
+  if (word === undefined) return "";
+
   return word.replace(/^[a-zA-Z]/, (c) => c.toUpperCase());
 }
 
-export function formatCurrency(amount: number | undefined): string | undefined {
-  if (amount === undefined) return;
+export function formatCurrency(amount: number | undefined): string {
+  if (amount === undefined) return formatCurrency(0);
 
   return new Intl.NumberFormat("es-MX", {
     style: "currency",

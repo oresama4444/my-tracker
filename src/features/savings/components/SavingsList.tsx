@@ -27,10 +27,15 @@ export function SavingsList({
   const calculateToGo = (
     total: number | undefined,
     progress: number | undefined,
-  ): number =>
+  ): string =>
     total !== undefined && progress !== undefined
-      ? Math.max(total - progress, 0)
-      : 0;
+      ? formatCurrency(Math.max(total - progress, 0))
+      : formatCurrency(0);
+
+  const calculateAmount = (amount: number, activity: string): string => {
+    if (activity === "withdraw") return formatCurrency(amount * -1);
+    return formatCurrency(amount);
+  };
 
   return (
     <section className="mx-auto flex flex-col items-center max-w-4xl border border-stone-300 rounded-2xl">
@@ -89,7 +94,7 @@ export function SavingsList({
               <p className="text-xs text-stone-400">{`${meta.count} entradas`}</p>
             </div>
             <div className="text-sm text-stone-500 flex gap-1 items-center">
-              <p className="font-mono">{`${formatCurrency(calculateToGo(category?.target, meta.total))}`}</p>
+              <p className="font-mono">{`${calculateToGo(category?.target, meta.total)}`}</p>
               <p>pendiente</p>
             </div>
           </div>
@@ -125,7 +130,7 @@ export function SavingsList({
                   <p
                     className={`font-mono text-sm ${saving.activity === "deposit" && "text-green-700"} ${saving.activity === "withdraw" && "text-red-700"}`}
                   >
-                    {formatCurrency(saving.amount)}
+                    {calculateAmount(saving.amount, saving.activity)}
                   </p>
                   <Pencil size={18} />
                   <Trash2 size={18} />
