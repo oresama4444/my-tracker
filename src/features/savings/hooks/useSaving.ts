@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { getSavings } from "../savingService";
-import type { Saving, SavingCategory } from "../types";
+import { createSavingEntry, getSavings } from "../savingService";
+import type { NewSavingFormData, Saving, SavingCategory } from "../types";
 import { defaultSavingCategory } from "../../../lib/defaultCategories";
 
 export function useSaving() {
@@ -40,7 +40,26 @@ export function useSaving() {
     loadSavings();
   }, []);
 
+  async function add(data: NewSavingFormData): Promise<boolean> {
+    try {
+      setLoading(true);
+
+      const created = await createSavingEntry(data);
+      if (created) loadSavings();
+
+      return created;
+    } catch (error) {
+      setError(
+        error instanceof Error ? error : new Error("No se pudo crear el gasto"),
+      );
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return {
+    add,
     savings,
     savingsByCategory,
     loading,

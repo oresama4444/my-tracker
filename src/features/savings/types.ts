@@ -25,3 +25,15 @@ export interface GetSavingsResponse {
     groupedByCategory: SavingCategory[];
   };
 }
+
+export interface NewSavingFormData {
+  date: number;
+  amount: number;
+  description: string;
+  activity: string;
+  category_id?: string;
+}
+
+export interface CreateSavingEntryResponse {
+  created: boolean;
+}
