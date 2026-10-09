@@ -5,6 +5,7 @@ import {
   type ChangeEventHandler,
   type SubmitEventHandler,
 } from "react";
+import { cleanCurrency, formatCurrency } from "../../../lib/formatter";
 
 export function UpdateExpenseForm({
   expense,
@@ -31,6 +32,9 @@ export function UpdateExpenseForm({
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const { name, value } = e.target;
+    if (name === "amount")
+      return setFormData((prev) => ({ ...prev, [name]: cleanCurrency(value) }));
+
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -57,7 +61,7 @@ export function UpdateExpenseForm({
           <input
             id="amount"
             name="amount"
-            value={formData.amount}
+            value={formatCurrency(formData.amount)}
             className={styles.input}
             onChange={handleChange}
           />

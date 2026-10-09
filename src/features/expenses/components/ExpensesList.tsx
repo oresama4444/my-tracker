@@ -60,7 +60,7 @@ export function ExpensesList({
               <Dot />
               <p className="text-sm text-stone-500">{`${dailyExpenses.meta.count} expenses`}</p>
             </div>
-            <div className="text-sm font-bold">{`$${dailyExpenses.meta.total}`}</div>
+            <div className="text-sm font-bold font-mono">{`$${dailyExpenses.meta.total}`}</div>
           </div>
           <div>
             {dailyExpenses.transactions.map((expense) => (
