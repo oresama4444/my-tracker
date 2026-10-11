@@ -5,7 +5,7 @@ export const defaultExpenseCategory = {};
 export const defaultIncomeCategory = {};
 
 export const defaultSavingCategory: Category = {
-  id: crypto.randomUUID(),
+  id: "",
   transaction_type: "saving",
   name: "general",
   description: "sin categoría definida",

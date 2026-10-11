@@ -37,3 +37,14 @@ export interface NewSavingFormData {
 export interface CreateSavingEntryResponse {
   created: boolean;
 }
+
+export interface SavingsListProps {
+  savingsByCategory: SavingCategory[];
+  add: (data: NewSavingFormData) => Promise<boolean>;
+}
+
+export interface NewSavingFormProps {
+  categoryId: string | undefined;
+  add: (data: NewSavingFormData) => Promise<boolean>;
+  cancelForm: () => void;
+}
