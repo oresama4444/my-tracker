@@ -26,6 +26,18 @@ export interface GetSavingsResponse {
   };
 }
 
+export interface CreateSavingEntryResponse {
+  created: boolean;
+}
+
+export interface DeleteSavingResponse {
+  deleted: boolean;
+}
+
+export interface UpdateSavingEntryResponse {
+  updated: boolean;
+}
+
 export interface NewSavingFormData {
   date: number;
   amount: number;
@@ -34,17 +46,28 @@ export interface NewSavingFormData {
   category_id?: string;
 }
 
-export interface CreateSavingEntryResponse {
-  created: boolean;
+export interface UpdateSavingFormData {
+  date?: number;
+  amount?: number;
+  description?: string;
+  activity?: string;
+  category_id?: string;
 }
 
 export interface SavingsListProps {
   savingsByCategory: SavingCategory[];
   add: (data: NewSavingFormData) => Promise<boolean>;
+  remove: (savingId: string) => Promise<boolean>;
 }
 
 export interface NewSavingFormProps {
   categoryId: string | undefined;
   add: (data: NewSavingFormData) => Promise<boolean>;
   cancelForm: () => void;
+}
+
+export interface UpdateSavingFormProps {
+  saving: Saving;
+  cancelForm: () => void;
+  edit: (data: UpdateSavingFormData, saving: Saving) => Promise<boolean>;
 }
