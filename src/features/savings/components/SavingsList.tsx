@@ -1,11 +1,16 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import type { SavingsListProps } from "../types";
 import { capitalizeWord, formatCurrency } from "../../../lib/formatter";
 import { SavingsListInCategoryCard } from "./SavingsListInCategoryCard";
 import { NewSavingForm } from "./NewSavingForm";
 import { Dot, PiggyBank, PlusCircle } from "lucide-react";
+import toast from "react-hot-toast";
 
-export function SavingsList({ savingsByCategory, add }: SavingsListProps) {
+export function SavingsList({
+  savingsByCategory,
+  add,
+  remove,
+}: SavingsListProps) {
   const [activeNewForm, setActiveNewForm] = useState<string | null>(null);
 
   const calculatePercentage = (
@@ -28,6 +33,14 @@ export function SavingsList({ savingsByCategory, add }: SavingsListProps) {
     if (activeNewForm === id) return setActiveNewForm(null);
 
     setActiveNewForm(id);
+  };
+
+  const handleDelete = async (id: string) => {
+    const deleted = await remove(id);
+
+    if (!deleted) return toast.error("Error al eliminar");
+
+    toast.success("Registro eliminado corectamente");
   };
 
   return (
@@ -102,6 +115,16 @@ export function SavingsList({ savingsByCategory, add }: SavingsListProps) {
               <p className="font-mono">{`${calculateToGo(category?.target, meta.total)}`}</p>
               <p>restante</p>
             </div>
+          </div>
+          <div>
+            {transactions.map((saving) => (
+              <Fragment key={saving.id}>
+                <SavingsListInCategoryCard
+                  saving={saving}
+                  handleDelete={handleDelete}
+                />
+              </Fragment>
+            ))}
           </div>
         </div>
       ))}
