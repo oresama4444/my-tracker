@@ -65,6 +65,9 @@ export function Header() {
         <NavLink to={"/incomes"} className={styles.navLink}>
           <div>Ingresos</div>
         </NavLink>
+        <NavLink to={"/savings"} className={styles.navLink}>
+          <div>Ahorros</div>
+        </NavLink>
       </nav>
     </header>
   );

@@ -4,6 +4,7 @@ import { Balance } from "../pages/Balance";
 import { Expenses } from "../pages/Expenses";
 import { Incomes } from "../pages/Incomes";
 import { Header } from "../components/Header";
+import { Savings } from "../pages/Savings";
 
 export default function AppRouter() {
   return (
@@ -14,6 +15,7 @@ export default function AppRouter() {
         <Route path="/balance" element={<Balance />} />
         <Route path="/expenses" element={<Expenses />} />
         <Route path="/incomes" element={<Incomes />} />
+        <Route path="/savings" element={<Savings />} />
       </Routes>
     </BrowserRouter>
   );
