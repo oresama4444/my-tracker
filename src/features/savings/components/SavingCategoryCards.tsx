@@ -6,7 +6,7 @@ import { NewSavingForm } from "./NewSavingForm";
 import { Dot, PiggyBank, PlusCircle } from "lucide-react";
 import toast from "react-hot-toast";
 
-export function SavingsList({
+export function SavingCategoryCards({
   savingsByCategory,
   add,
   remove,
