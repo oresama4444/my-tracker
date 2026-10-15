@@ -1,5 +1,7 @@
+import type { TransactionType } from "../../types/common";
+
 export interface NewCategoryFormData {
-  transaction_type: string;
+  transaction_type: TransactionType;
   name: string;
   description: string;
   color: string;
