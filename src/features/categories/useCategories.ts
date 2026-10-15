@@ -4,21 +4,27 @@ import {
   deleteCategory,
   updateCategory,
 } from "./categoryService";
-import type { NewCategoryFormData, UpdateCategoryFormData } from "./types";
+import type {
+  CreateCategoryResponse,
+  NewCategoryFormData,
+  UpdateCategoryFormData,
+} from "./types";
 import type { Category } from "../../types/common";
 
 export function useCategories() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
-  async function add(data: NewCategoryFormData): Promise<boolean> {
+  async function addCategory(
+    data: NewCategoryFormData,
+  ): Promise<CreateCategoryResponse | boolean> {
     try {
       setLoading(true);
 
-      const created = await createCategory(data);
-      // if (created) load();
+      const { created, categoryId } = await createCategory(data);
+      if (!created) throw new Error("No se pudo crear");
 
-      return created;
+      return { created, categoryId };
     } catch (error) {
       setError(error instanceof Error ? error : new Error("No se pudo crear"));
       return false;
@@ -27,7 +33,7 @@ export function useCategories() {
     }
   }
 
-  async function edit(
+  async function editCategory(
     data: UpdateCategoryFormData,
     category: Category,
   ): Promise<boolean> {
@@ -59,7 +65,7 @@ export function useCategories() {
     }
   }
 
-  async function remove(categoryId: string): Promise<boolean> {
+  async function removeCategory(categoryId: string): Promise<boolean> {
     try {
       setLoading(true);
 
@@ -76,9 +82,9 @@ export function useCategories() {
   }
 
   return {
-    add,
-    edit,
-    remove,
+    addCategory,
+    editCategory,
+    removeCategory,
     loading,
     error,
   };

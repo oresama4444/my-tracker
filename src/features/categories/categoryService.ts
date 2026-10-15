@@ -9,13 +9,16 @@ import type {
 
 export async function createCategory(
   data: NewCategoryFormData,
-): Promise<boolean> {
-  const { created } = await api<CreateCategoryResponse>("/categories", {
-    method: "POST",
-    body: JSON.stringify(data),
-  });
+): Promise<CreateCategoryResponse> {
+  const { created, categoryId } = await api<CreateCategoryResponse>(
+    "/categories",
+    {
+      method: "POST",
+      body: JSON.stringify(data),
+    },
+  );
 
-  return created;
+  return { created, categoryId };
 }
 
 export async function updateCategory(

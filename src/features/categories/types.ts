@@ -10,6 +10,7 @@ export interface NewCategoryFormData {
 
 export interface CreateCategoryResponse {
   created: boolean;
+  categoryId: string;
 }
 
 export interface UpdateCategoryFormData {
