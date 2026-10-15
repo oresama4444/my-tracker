@@ -1,8 +1,13 @@
 import { Landmark, Plus } from "lucide-react";
 import { useState } from "react";
 import { NewSavingCategoryForm } from "./NewSavingCategoryForm";
+import type { NewSavingFormData } from "../types";
 
-export function SavingsHeader() {
+export function SavingsHeader({
+  add,
+}: {
+  add: (data: NewSavingFormData) => Promise<boolean>;
+}) {
   const [activeForm, setActiveForm] = useState<boolean>(false);
 
   return (
@@ -31,7 +36,10 @@ export function SavingsHeader() {
       <div
         className={`${activeForm ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"} min-h-screen min-w-full absolute top-0 left-0 z-30 flex items-center justify-center transition-all duration-400`}
       >
-        <NewSavingCategoryForm cancelForm={() => setActiveForm(false)} />
+        <NewSavingCategoryForm
+          cancelForm={() => setActiveForm(false)}
+          add={add}
+        />
       </div>
     </header>
   );

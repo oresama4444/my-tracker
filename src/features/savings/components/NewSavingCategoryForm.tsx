@@ -4,46 +4,97 @@ import {
   type SubmitEventHandler,
 } from "react";
 import type { NewCategoryFormData } from "../../categories/types";
-import { cleanCurrency, formatCurrency } from "../../../lib/formatter";
+import type { NewSavingFormData } from "../types";
+import { cleanDatetimeInput } from "../../../lib/dates";
+import { cleanCurrency } from "../../../lib/formatter";
 import { useCategories } from "../../categories/useCategories";
+import { CategoryForm } from "./CategoryForm";
+import { NewSavingForm } from "./NewSavingForm";
 import toast from "react-hot-toast";
 
 export function NewSavingCategoryForm({
   cancelForm,
+  add,
 }: {
   cancelForm: () => void;
+  add: (data: NewSavingFormData) => Promise<boolean>;
 }) {
-  const { add } = useCategories();
-  const [formData, setFormData] = useState<NewCategoryFormData>({
-    transaction_type: "saving",
-    name: "",
-    description: "",
-    color: "",
-    target: 0,
-  });
-
-  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const { name, value } = e.target;
-    if (name === "color") console.log(name, value);
-    if (name === "target")
-      return setFormData((prev) => ({ ...prev, [name]: cleanCurrency(value) }));
-
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit: SubmitEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault();
-    console.log(formData);
-    const created = await add(formData);
-    if (!created) return toast.error("Error al agregar ingreso");
-
-    toast.success("Registro creado correctamente");
-    setFormData({
+  const { addCategory } = useCategories();
+  const [categoryFormData, setCategoryFormData] = useState<NewCategoryFormData>(
+    {
       transaction_type: "saving",
       name: "",
       description: "",
       color: "",
       target: 0,
+    },
+  );
+  const [savingFormData, setSavingFormData] = useState<NewSavingFormData>({
+    date: Date.now(),
+    amount: 0,
+    description: "",
+    activity: "deposit",
+  });
+
+  const handleCategoryChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const { name, value } = e.target;
+
+    if (name === "target")
+      return setCategoryFormData((prev) => ({
+        ...prev,
+        [name]: cleanCurrency(value),
+      }));
+
+    setCategoryFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSavingChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const { name, value } = e.target;
+
+    if (name.includes("date"))
+      return setSavingFormData((prev) => ({
+        ...prev,
+        date: cleanDatetimeInput(value),
+      }));
+    if (name.includes("amount"))
+      return setSavingFormData((prev) => ({
+        ...prev,
+        amount: cleanCurrency(value),
+      }));
+    if (name.includes("activity"))
+      return setSavingFormData((prev) => ({ ...prev, activity: value }));
+    if (name.includes("description"))
+      return setSavingFormData((prev) => ({ ...prev, description: value }));
+  };
+
+  const handleSubmit: SubmitEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+
+    const createdCategory = await addCategory(categoryFormData);
+    if (typeof createdCategory === "boolean")
+      return !createdCategory ? toast.error("Error al crear categoría") : "";
+
+    const newSaving: NewSavingFormData = {
+      category_id: createdCategory.categoryId,
+      ...savingFormData,
+    };
+    const createdSaving = await add(newSaving);
+
+    if (!createdSaving) return toast.error("Error al crear ahorro");
+
+    toast.success("Registro creado correctamente");
+    setCategoryFormData({
+      transaction_type: "saving",
+      name: "",
+      description: "",
+      color: "",
+      target: 0,
+    });
+    setSavingFormData({
+      date: Date.now(),
+      amount: 0,
+      description: "",
+      activity: "deposit",
     });
     cancelForm();
   };
@@ -60,6 +111,16 @@ export function NewSavingCategoryForm({
     pickedColor: "border-4 border-gray-700",
   };
 
+  const savingFormStyles = {
+    form: "my-2 grid grid-cols-2 gap-2",
+    field: "grid grid-cols-1 items-center",
+    label: "text-xs text-stone-500",
+    input:
+      "text-sm text-stone-600 border border-stone-300 bg-stone-100 rounded-md p-1.5",
+    button:
+      "flex items-center gap-1 text-sm cursor-pointer rounded py-1 px-2 transition-all duration-100",
+  };
+
   return (
     <>
       <div className="absolute inset-0 bg-black/20 backdrop-blur-xs"></div>
@@ -67,132 +128,22 @@ export function NewSavingCategoryForm({
         <div>
           <h1>Nueva Meta</h1>
         </div>
-        <form
-          id="new-saving-category"
-          onSubmit={handleSubmit}
-          className="my-2 grid grid-cols-2 gap-2"
-        >
-          <div className={styles.container}>
-            <label htmlFor="name" className={styles.label}>
-              Nombre:
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              className={styles.input}
-              onChange={handleChange}
-            />
-          </div>
-          <div className={styles.container}>
-            <label htmlFor="target" className={styles.label}>
-              Objetivo:
-            </label>
-            <input
-              type="text"
-              id="target"
-              name="target"
-              value={formatCurrency(formData.target)}
-              className={styles.input}
-              onChange={handleChange}
-            />
-          </div>
-          <div className={`${styles.container} col-span-2`}>
-            <label htmlFor="description" className={styles.label}>
-              Descripción:
-            </label>
-            <input
-              type="text"
-              id="description"
-              name="description"
-              value={formData.description}
-              className={styles.input}
-              onChange={handleChange}
-            />
-          </div>
-          <div className={styles.container}>
-            <div className={styles.label}>Color:</div>
-            <div className="flex gap-2">
-              <div>
-                <input
-                  type="radio"
-                  id="red"
-                  name="color"
-                  value="#F87171"
-                  className={styles.radio}
-                  onChange={handleChange}
-                />
-                <label
-                  htmlFor="red"
-                  className={`${styles.labelColorPick} ${formData.color === "#F87171" && styles.pickedColor}`}
-                  style={{ backgroundColor: "#F87171" }}
-                ></label>
-              </div>
-              <div>
-                <input
-                  type="radio"
-                  id="orange"
-                  name="color"
-                  value="#FB923C"
-                  className={styles.radio}
-                  onChange={handleChange}
-                />
-                <label
-                  htmlFor="orange"
-                  className={`${styles.labelColorPick} ${formData.color === "#FB923C" && styles.pickedColor}`}
-                  style={{ backgroundColor: "#FB923C" }}
-                ></label>
-              </div>
-              <div>
-                <input
-                  type="radio"
-                  id="green"
-                  name="color"
-                  value="#4ADE80"
-                  className={styles.radio}
-                  onChange={handleChange}
-                />
-                <label
-                  htmlFor="green"
-                  className={`${styles.labelColorPick} ${formData.color === "#4ADE80" && styles.pickedColor}`}
-                  style={{ backgroundColor: "#4ADE80" }}
-                ></label>
-              </div>
-              <div>
-                <input
-                  type="radio"
-                  id="blue"
-                  name="color"
-                  value="#60A5FA"
-                  className={styles.radio}
-                  onChange={handleChange}
-                />
-                <label
-                  htmlFor="blue"
-                  className={`${styles.labelColorPick} ${formData.color === "#60A5FA" && styles.pickedColor}`}
-                  style={{ backgroundColor: "#60A5FA" }}
-                ></label>
-              </div>
-              <div>
-                <input
-                  type="radio"
-                  id="purple"
-                  name="color"
-                  value="#A78BFA"
-                  className={styles.radio}
-                  onChange={handleChange}
-                />
-                <label
-                  htmlFor="purple"
-                  className={`${styles.labelColorPick} ${formData.color === "#A78BFA" && styles.pickedColor}`}
-                  style={{ backgroundColor: "#A78BFA" }}
-                ></label>
-              </div>
-            </div>
-          </div>
-        </form>
-        <div className="flex justify-end gap-2">
+        <CategoryForm
+          formData={categoryFormData}
+          handleChange={handleCategoryChange}
+          handleSubmit={handleSubmit}
+        />
+        <div className="pt-2 mt-4 border-t border-t-stone-300">
+          <h2>Agregar Ahorro</h2>
+        </div>
+        <NewSavingForm
+          formData={savingFormData}
+          handleChange={handleSavingChange}
+          handleSubmit={() => {}}
+          styles={savingFormStyles}
+          formId=""
+        />
+        <div className="flex justify-end gap-2 mt-4">
           <button
             onClick={cancelForm}
             className={`${styles.button} hover:bg-red-200`}

@@ -7,7 +7,7 @@ export function Savings() {
 
   return (
     <div className="min-h-screen mt-2 bg-stone-50">
-      <SavingsHeader />
+      <SavingsHeader add={add} />
       <SavingCategoryCards
         savingsByCategory={savingsByCategory}
         add={add}

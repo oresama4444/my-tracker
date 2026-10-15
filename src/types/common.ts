@@ -8,3 +8,11 @@ export interface Category {
   color: string;
   target?: number;
 }
+
+export interface FormStyles {
+  form: string;
+  field: string;
+  label: string;
+  input: string;
+  button: string;
+}
