@@ -44,7 +44,7 @@ export function SavingCategoryCards({
   };
 
   return (
-    <section className="mx-auto flex flex-col items-center max-w-4xl gap-2">
+    <section className="mx-auto flex flex-col items-center max-w-4xl gap-2 mt-4">
       {savingsByCategory?.map(({ id, category, transactions, meta }) => (
         <div key={id} className="w-full border border-stone-300 rounded-2xl">
           <div className="flex justify-between p-4">
