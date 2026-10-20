@@ -1,10 +1,21 @@
-import { Fragment, useState } from "react";
-import type { SavingsListProps } from "../types";
-import { capitalizeWord, formatCurrency } from "../../../lib/formatter";
+import {
+  Fragment,
+  useState,
+  type ChangeEventHandler,
+  type SubmitEventHandler,
+} from "react";
+import type { NewSavingFormData, SavingsListProps } from "../types";
+import {
+  capitalizeWord,
+  cleanCurrency,
+  formatCurrency,
+} from "../../../lib/formatter";
 import { SavingsListInCategoryCard } from "./SavingsListInCategoryCard";
 import { NewSavingForm } from "./NewSavingForm";
-import { Dot, PiggyBank, PlusCircle } from "lucide-react";
+import { Dot, PenLine, PiggyBank, PlusCircle, X } from "lucide-react";
 import toast from "react-hot-toast";
+import { cleanDatetimeInput } from "../../../lib/dates";
+import type { FormStyles } from "../../../types/common";
 
 export function SavingCategoryCards({
   savingsByCategory,
@@ -12,6 +23,14 @@ export function SavingCategoryCards({
   remove,
 }: SavingsListProps) {
   const [activeNewForm, setActiveNewForm] = useState<string | null>(null);
+  // const formId = crypto.randomUUID();
+  const [formData, setFormData] = useState<NewSavingFormData>({
+    date: Date.now(),
+    amount: 0,
+    description: "",
+    activity: "deposit",
+    category_id: "",
+  });
 
   const calculatePercentage = (
     total: number | undefined,
@@ -41,6 +60,55 @@ export function SavingCategoryCards({
     if (!deleted) return toast.error("Error al eliminar");
 
     toast.success("Registro eliminado corectamente");
+  };
+
+  const handleSubmit: SubmitEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+
+    const formId = e.currentTarget.id;
+    const data: NewSavingFormData = {
+      ...formData,
+      category_id: formId !== "general" ? formId : undefined,
+    };
+
+    const created = await add(data);
+    if (!created) return toast.error("Error al agregar entrada");
+
+    toast.success("Entrada creada correctamente");
+    setFormData({
+      date: Date.now(),
+      amount: 0,
+      description: "",
+      activity: "deposit",
+      category_id: "",
+    });
+    setActiveNewForm(null);
+  };
+
+  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const { name, value } = e.target;
+
+    if (name.includes("date"))
+      return setFormData((prev) => ({
+        ...prev,
+        date: cleanDatetimeInput(value),
+      }));
+    if (name.includes("amount"))
+      return setFormData((prev) => ({ ...prev, amount: cleanCurrency(value) }));
+    if (name.includes("activity"))
+      return setFormData((prev) => ({ ...prev, activity: value }));
+    if (name.includes("description"))
+      return setFormData((prev) => ({ ...prev, description: value }));
+  };
+
+  const styles: FormStyles = {
+    form: "grid grid-cols-2 gap-y-2 gap-x-18 max-w-5/6 mx-auto",
+    field: "grid grid-cols-2 items-center",
+    label: "text-sm text-stone-700",
+    input:
+      "text-sm text-stone-600 border border-stone-300 bg-stone-50 rounded-md p-0.5",
+    button:
+      "flex items-center gap-1 text-sm cursor-pointer rounded py-1 px-2 transition-all duration-100",
   };
 
   return (
@@ -100,10 +168,30 @@ export function SavingCategoryCards({
             className={`${id === activeNewForm ? "max-h-96 opacity-100 pointer-events-auto" : " max-h-0 opacity-0 pointer-events-none"} transition-all duration-200 bg-stone-50 border-t border-t-stone-300 py-2`}
           >
             <NewSavingForm
-              categoryId={category?.id}
-              add={add}
-              cancelForm={() => setActiveNewForm(null)}
+              formData={formData}
+              handleChange={handleChange}
+              handleSubmit={handleSubmit}
+              styles={styles}
+              formId={category && category.id ? category.id : "general"}
             />
+            <div className="px-6 pt-4 flex justify-end gap-4">
+              <button
+                type="button"
+                className={`${styles.button} hover:bg-red-200`}
+                onClick={() => setActiveNewForm(null)}
+              >
+                <X size={16} />
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                form={category && category.id ? category.id : "general"}
+                className={`${styles.button} bg-emerald-500 hover:bg-emerald-400`}
+              >
+                <PenLine size={16} />
+                Registrar
+              </button>
+            </div>
           </div>
           <div className="flex justify-between items-center px-4 py-2 border-t-stone-300 border-t hover:bg-stone-100 cursor-pointer transition-all duration-100 rounded-b-2xl">
             <div className="flex items-center">
