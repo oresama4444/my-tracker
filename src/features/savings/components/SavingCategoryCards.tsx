@@ -1,21 +1,20 @@
 import {
-  Fragment,
   useState,
   type ChangeEventHandler,
   type SubmitEventHandler,
 } from "react";
+import type { FormStyles } from "../../../types/common";
 import type { NewSavingFormData, SavingsListProps } from "../types";
+import { cleanDatetimeInput } from "../../../lib/dates";
 import {
   capitalizeWord,
   cleanCurrency,
   formatCurrency,
 } from "../../../lib/formatter";
-import { SavingsListInCategoryCard } from "./SavingsListInCategoryCard";
 import { NewSavingForm } from "./NewSavingForm";
+import { SavingListByCategory } from "./SavingListByCategory";
 import { Dot, PenLine, PiggyBank, PlusCircle, X } from "lucide-react";
 import toast from "react-hot-toast";
-import { cleanDatetimeInput } from "../../../lib/dates";
-import type { FormStyles } from "../../../types/common";
 
 export function SavingCategoryCards({
   savingsByCategory,
@@ -23,7 +22,7 @@ export function SavingCategoryCards({
   remove,
 }: SavingsListProps) {
   const [activeNewForm, setActiveNewForm] = useState<string | null>(null);
-  // const formId = crypto.randomUUID();
+  const [activeList, setActiveList] = useState<string | null>(null);
   const [formData, setFormData] = useState<NewSavingFormData>({
     date: Date.now(),
     amount: 0,
@@ -52,6 +51,12 @@ export function SavingCategoryCards({
     if (activeNewForm === id) return setActiveNewForm(null);
 
     setActiveNewForm(id);
+  };
+
+  const handleEditForm = (id: string) => {
+    if (activeList === id) return setActiveList(null);
+
+    setActiveList(id);
   };
 
   const handleDelete = async (id: string) => {
@@ -193,7 +198,10 @@ export function SavingCategoryCards({
               </button>
             </div>
           </div>
-          <div className="flex justify-between items-center px-4 py-2 border-t-stone-300 border-t hover:bg-stone-100 cursor-pointer transition-all duration-100 rounded-b-2xl">
+          <div
+            onClick={() => handleEditForm(id)}
+            className="flex justify-between items-center px-4 py-2 border-t-stone-300 border-t hover:bg-stone-100 cursor-pointer transition-all duration-100 rounded-b-2xl"
+          >
             <div className="flex items-center">
               <h3 className="text-sm text-stone-600">Movimientos</h3>
               <Dot />
@@ -204,15 +212,17 @@ export function SavingCategoryCards({
               <p>restante</p>
             </div>
           </div>
-          <div>
-            {transactions.map((saving) => (
-              <Fragment key={saving.id}>
-                <SavingsListInCategoryCard
-                  saving={saving}
-                  handleDelete={handleDelete}
-                />
-              </Fragment>
-            ))}
+          <div
+            className={`grid transition-[grid-template-rows,opacity] duration-300 ${
+              id === activeList
+                ? "grid-rows-[1fr] opacity-100"
+                : "grid-rows-[0fr] opacity-0 pointer-events-none"
+            }`}
+          >
+            <SavingListByCategory
+              savings={transactions}
+              handleDelete={handleDelete}
+            />
           </div>
         </div>
       ))}

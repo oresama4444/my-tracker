@@ -3,7 +3,7 @@ import { capitalizeWord, formatCurrency } from "../../../lib/formatter";
 import { getLongDate } from "../../../lib/dates";
 import { ArrowDownToLine, ArrowUpFromLine, Pencil, Trash2 } from "lucide-react";
 
-export function SavingsListInCategoryCard({
+export function SavingsListItem({
   saving,
   handleDelete,
 }: {
