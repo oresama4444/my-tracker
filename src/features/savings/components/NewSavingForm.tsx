@@ -1,10 +1,5 @@
-import {
-  useState,
-  type ChangeEventHandler,
-  type SubmitEventHandler,
-} from "react";
-import type { FormStyles } from "../../../types/common";
-import type { NewSavingFormData } from "../types";
+import { useState } from "react";
+import type { NewSavingFormProps } from "../types";
 import { formatDatetimeInput } from "../../../lib/dates";
 import { formatCurrency } from "../../../lib/formatter";
 import { ArrowDownToLine, ArrowUpFromLine, ChevronDown } from "lucide-react";
@@ -15,13 +10,7 @@ export function NewSavingForm({
   handleSubmit,
   styles,
   formId,
-}: {
-  formData: NewSavingFormData;
-  handleChange: ChangeEventHandler;
-  handleSubmit: SubmitEventHandler;
-  styles: FormStyles;
-  formId: string;
-}) {
+}: NewSavingFormProps) {
   const [activeActivityMenu, setActiveActivityMenu] = useState<boolean>(false);
 
   const id = crypto.randomUUID();

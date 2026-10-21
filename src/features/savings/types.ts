@@ -1,4 +1,6 @@
-import type { Category } from "../../types/common";
+import type { ChangeEventHandler, SubmitEventHandler } from "react";
+import type { Category, FormStyles } from "../../types/common";
+import type { NewCategoryFormData } from "../categories/types";
 
 export interface Saving {
   id: string;
@@ -60,14 +62,41 @@ export interface SavingsListProps {
   remove: (savingId: string) => Promise<boolean>;
 }
 
-export interface NewSavingFormProps {
-  categoryId: string | undefined;
-  add: (data: NewSavingFormData) => Promise<boolean>;
-  cancelForm: () => void;
-}
-
 export interface UpdateSavingFormProps {
   saving: Saving;
   cancelForm: () => void;
   edit: (data: UpdateSavingFormData, saving: Saving) => Promise<boolean>;
+}
+
+export interface SavingsHeaderProps {
+  add: (data: NewSavingFormData) => Promise<boolean>;
+}
+
+export interface NewSavingCategoryFormProps {
+  cancelForm: () => void;
+  add: (data: NewSavingFormData) => Promise<boolean>;
+}
+
+export interface CategoryFormProps {
+  formData: NewCategoryFormData;
+  handleChange: ChangeEventHandler;
+  handleSubmit: SubmitEventHandler;
+}
+
+export interface NewSavingFormProps {
+  formData: NewSavingFormData;
+  handleChange: ChangeEventHandler;
+  handleSubmit: SubmitEventHandler;
+  styles: FormStyles;
+  formId: string;
+}
+
+export interface SavingListByCategoryProps {
+  savings: Saving[];
+  handleDelete: (id: string) => void;
+}
+
+export interface SavingsListItemProps {
+  saving: Saving;
+  handleDelete: (id: string) => void;
 }

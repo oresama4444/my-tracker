@@ -1,4 +1,4 @@
-import type { Saving } from "../types";
+import type { SavingsListItemProps } from "../types";
 import { capitalizeWord, formatCurrency } from "../../../lib/formatter";
 import { getLongDate } from "../../../lib/dates";
 import { ArrowDownToLine, ArrowUpFromLine, Pencil, Trash2 } from "lucide-react";
@@ -6,10 +6,7 @@ import { ArrowDownToLine, ArrowUpFromLine, Pencil, Trash2 } from "lucide-react";
 export function SavingsListItem({
   saving,
   handleDelete,
-}: {
-  saving: Saving;
-  handleDelete: (id: string) => void;
-}) {
+}: SavingsListItemProps) {
   const calculateAmount = (amount: number, activity: string): string => {
     if (activity === "withdraw") return formatCurrency(amount * -1);
     return formatCurrency(amount);

@@ -1,16 +1,11 @@
-import type { ChangeEventHandler, SubmitEventHandler } from "react";
-import type { NewCategoryFormData } from "../../categories/types";
+import type { CategoryFormProps } from "../types";
 import { formatCurrency } from "../../../lib/formatter";
 
 export function CategoryForm({
   formData,
   handleChange,
   handleSubmit,
-}: {
-  formData: NewCategoryFormData;
-  handleChange: ChangeEventHandler;
-  handleSubmit: SubmitEventHandler;
-}) {
+}: CategoryFormProps) {
   const styles = {
     container: "grid grid-cols-1 items-center gap-1",
     label: "text-xs text-stone-500",

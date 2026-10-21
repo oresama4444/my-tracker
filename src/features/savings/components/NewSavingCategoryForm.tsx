@@ -4,7 +4,7 @@ import {
   type SubmitEventHandler,
 } from "react";
 import type { NewCategoryFormData } from "../../categories/types";
-import type { NewSavingFormData } from "../types";
+import type { NewSavingCategoryFormProps, NewSavingFormData } from "../types";
 import { cleanDatetimeInput } from "../../../lib/dates";
 import { cleanCurrency } from "../../../lib/formatter";
 import { useCategories } from "../../categories/useCategories";
@@ -15,10 +15,7 @@ import toast from "react-hot-toast";
 export function NewSavingCategoryForm({
   cancelForm,
   add,
-}: {
-  cancelForm: () => void;
-  add: (data: NewSavingFormData) => Promise<boolean>;
-}) {
+}: NewSavingCategoryFormProps) {
   const { addCategory } = useCategories();
   const [categoryFormData, setCategoryFormData] = useState<NewCategoryFormData>(
     {

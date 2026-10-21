@@ -1,13 +1,9 @@
-import { Landmark, Plus } from "lucide-react";
 import { useState } from "react";
+import type { SavingsHeaderProps } from "../types";
 import { NewSavingCategoryForm } from "./NewSavingCategoryForm";
-import type { NewSavingFormData } from "../types";
+import { Landmark, Plus } from "lucide-react";
 
-export function SavingsHeader({
-  add,
-}: {
-  add: (data: NewSavingFormData) => Promise<boolean>;
-}) {
+export function SavingsHeader({ add }: SavingsHeaderProps) {
   const [activeForm, setActiveForm] = useState<boolean>(false);
 
   return (
