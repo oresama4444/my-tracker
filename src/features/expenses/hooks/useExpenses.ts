@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import type {
   DailyExpense,
   Expense,
+  ExpenseCategory,
   ExpenseUpdateFormData,
   NewExpenseFormData,
 } from "../types";
@@ -15,6 +16,9 @@ import {
 export function useExpenses() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [expensesByDay, setExpensesByDay] = useState<DailyExpense[]>([]);
+  const [expensesByCategory, setExpensesByCategory] = useState<
+    ExpenseCategory[]
+  >([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -26,6 +30,7 @@ export function useExpenses() {
 
       setExpenses(expenses.raw);
       setExpensesByDay(expenses.groupedByDay);
+      setExpensesByCategory(expenses.groupedByCategory);
     } catch (error) {
       setError(
         error instanceof Error
@@ -116,6 +121,7 @@ export function useExpenses() {
   return {
     expenses,
     expensesByDay,
+    expensesByCategory,
     update,
     remove,
     add,

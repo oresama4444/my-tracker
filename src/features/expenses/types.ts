@@ -1,3 +1,5 @@
+import type { Category } from "../../types/common";
+
 export interface Expense {
   id: string;
   date: number;
@@ -21,9 +23,17 @@ export interface DailyExpense {
   transactions: Expense[];
 }
 
+export interface ExpenseCategory {
+  id: string;
+  category: Category;
+  meta: ExpenseMeta;
+  transactions: Expense[];
+}
+
 export interface GetExpensesResponse {
   expenses: {
     groupedByDay: DailyExpense[];
+    groupedByCategory: ExpenseCategory[];
     raw: Expense[];
   };
 }
