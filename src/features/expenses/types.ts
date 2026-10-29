@@ -57,16 +57,6 @@ export interface ExpenseUpdateFormData {
   account?: string;
 }
 
-export interface ExpensesListProps {
-  expensesByDay: DailyExpense[];
-  update: (
-    expenseId: string,
-    data: ExpenseUpdateFormData,
-    expense: Expense,
-  ) => Promise<boolean>;
-  remove: (expenseId: string) => Promise<boolean>;
-}
-
 export interface ExpenseItemProps {
   expense: Expense;
   handleEdit: (id: string) => void;
