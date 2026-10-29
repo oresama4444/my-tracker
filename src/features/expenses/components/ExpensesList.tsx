@@ -1,20 +1,14 @@
 import { Fragment, useState } from "react";
-import type {
-  Expense,
-  ExpensesListProps,
-  ExpenseUpdateFormData,
-} from "../types";
+import type { Expense, ExpenseUpdateFormData } from "../types";
 import { getLongDate } from "../../../lib/dates";
 import { UpdateExpenseForm } from "./UpdateExpenseForm";
 import { ExpenseItem } from "./ExpenseItem";
 import { Dot } from "lucide-react";
 import toast from "react-hot-toast";
+import { useExpensesContext } from "../context/ExpensesContext";
 
-export function ExpensesList({
-  expensesByDay,
-  update,
-  remove,
-}: ExpensesListProps) {
+export function ExpensesList() {
+  const { expensesByDay, update, remove } = useExpensesContext();
   const [activeEdit, setActiveEdit] = useState<string | null>(null);
 
   const handleEdit = (id: string) => {

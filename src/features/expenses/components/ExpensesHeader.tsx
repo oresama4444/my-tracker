@@ -1,13 +1,10 @@
 import { BadgeDollarSign, Plus } from "lucide-react";
 import { useState } from "react";
 import { NewExpenseForm } from "./NewExpenseForm";
-import type { NewExpenseFormData } from "../types";
+import { useExpensesContext } from "../context/ExpensesContext";
 
-interface ExpensesHeaderProps {
-  add: (data: NewExpenseFormData) => Promise<boolean>;
-}
-
-export function ExpensesHeader({ add }: ExpensesHeaderProps) {
+export function ExpensesHeader() {
+  const { add } = useExpensesContext();
   const [activeForm, setActiveForm] = useState<boolean>(false);
 
   return (
