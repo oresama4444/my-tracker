@@ -12,6 +12,7 @@ import {
   getExpenses,
   updateExpense,
 } from "../expenseService";
+import { defaultExpenseCategory } from "../../../lib/defaultCategories";
 
 export function useExpenses() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
@@ -27,10 +28,16 @@ export function useExpenses() {
       setLoading(true);
 
       const { expenses } = await getExpenses();
+      const expensesByCategory = Object.values(expenses.groupedByCategory).map(
+        (group): ExpenseCategory => ({
+          ...group,
+          category: group.category ?? defaultExpenseCategory,
+        }),
+      );
 
       setExpenses(expenses.raw);
       setExpensesByDay(expenses.groupedByDay);
-      setExpensesByCategory(expenses.groupedByCategory);
+      setExpensesByCategory(expensesByCategory);
     } catch (error) {
       setError(
         error instanceof Error
