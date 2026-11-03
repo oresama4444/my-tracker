@@ -1,6 +1,13 @@
 import type { Category } from "../types/common";
 
-export const defaultExpenseCategory = {};
+export const defaultExpenseCategory = {
+  id: "",
+  transaction_type: "expense",
+  name: "general",
+  description: "sin categoría definida",
+  // target: 10000,
+  color: "#3CB52B",
+};
 
 export const defaultIncomeCategory = {};
 
