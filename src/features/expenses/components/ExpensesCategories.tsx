@@ -2,10 +2,19 @@ import { ChevronDown, Dot, Plus, Tag } from "lucide-react";
 import { useExpensesContext } from "../context/ExpensesContext";
 import { capitalizeWord, formatCurrency } from "../../../lib/formatter";
 import { calculatePercentage, calculateToGo } from "../../../lib/calculations";
+import { ExpensesCategoryDetail } from "./ExpensesCategoryDetail";
+import { useState } from "react";
 
 export function ExpensesCategories() {
   const { expensesByCategory } = useExpensesContext();
-  console.log(expensesByCategory);
+  const [activeDetail, setActiveDetail] = useState<string | null>(null);
+  console.log(activeDetail);
+
+  const handleEdit = (id: string) => {
+    if (activeDetail === id) return setActiveDetail(null);
+
+    setActiveDetail(id);
+  };
 
   return (
     <section className="mx-auto max-w-4xl border rounded-2xl border-stone-300">
@@ -33,7 +42,11 @@ export function ExpensesCategories() {
                 <p className="font-mono">{formatCurrency(meta.total)}</p>
                 <p>/</p>
                 <p className="font-mono">{formatCurrency(category.target)}</p>
-                <ChevronDown size={18} />
+                <ChevronDown
+                  size={18}
+                  onClick={() => handleEdit(id)}
+                  className="cursor-pointer"
+                />
               </div>
             </div>
             <div className="w-11/12 m-auto">
@@ -55,6 +68,16 @@ export function ExpensesCategories() {
                   <p>restante</p>
                 </span>
               </div>
+            </div>
+            <div
+              className={`${activeDetail === id ? "max-h-96 opacity-100 pointer-events-auto" : " max-h-0 opacity-0 pointer-events-none"} transition-all duration-200 bg-stone-50 rounded-xl`}
+            >
+              <ExpensesCategoryDetail
+                name={category.name}
+                budget={category.target}
+                expenses={transactions}
+                total={meta.total}
+              />
             </div>
           </div>
         ))}
