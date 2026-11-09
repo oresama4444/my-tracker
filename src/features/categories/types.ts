@@ -1,3 +1,4 @@
+import type { ChangeEventHandler, SubmitEventHandler } from "react";
 import type { TransactionType } from "../../types/common";
 
 export interface NewCategoryFormData {
@@ -27,4 +28,10 @@ export interface DeleteCategoryResponse {
 
 export interface UpdateCategoryResponse {
   updated: boolean;
+}
+
+export interface NewCategoryFormProps {
+  formData: NewCategoryFormData;
+  handleChange: ChangeEventHandler;
+  handleSubmit: SubmitEventHandler;
 }
