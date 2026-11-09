@@ -8,9 +8,9 @@ import type { NewSavingCategoryFormProps, NewSavingFormData } from "../types";
 import { cleanDatetimeInput } from "../../../lib/dates";
 import { cleanCurrency } from "../../../lib/formatter";
 import { useCategories } from "../../categories/useCategories";
-import { CategoryForm } from "./CategoryForm";
 import { NewSavingForm } from "./NewSavingForm";
 import toast from "react-hot-toast";
+import { NewCategoryForm } from "../../categories/components/NewCategoryFrom";
 
 export function NewSavingCategoryForm({
   cancelForm,
@@ -22,7 +22,7 @@ export function NewSavingCategoryForm({
       transaction_type: "saving",
       name: "",
       description: "",
-      color: "",
+      color: "#F87171",
       target: 0,
     },
   );
@@ -125,7 +125,7 @@ export function NewSavingCategoryForm({
         <div>
           <h1>Nueva Meta</h1>
         </div>
-        <CategoryForm
+        <NewCategoryForm
           formData={categoryFormData}
           handleChange={handleCategoryChange}
           handleSubmit={handleSubmit}
@@ -149,7 +149,7 @@ export function NewSavingCategoryForm({
           </button>
           <button
             className={`${styles.button} bg-emerald-500 hover:bg-emerald-400`}
-            form="new-saving-category"
+            form="new-category"
           >
             Guardar
           </button>
