@@ -12,13 +12,12 @@ import {
   type ChangeEventHandler,
   type SubmitEventHandler,
 } from "react";
-import { useCategories } from "../../categories/useCategories";
 import type { NewCategoryFormData } from "../../categories/types";
 import { NewCategoryForm } from "../../categories/components/NewCategoryFrom";
+import toast from "react-hot-toast";
 
 export function ExpensesCategories() {
-  const { addCategory } = useCategories();
-  const { expensesByCategory } = useExpensesContext();
+  const { expensesByCategory, addExpensesCategory } = useExpensesContext();
   const [activeDetail, setActiveDetail] = useState<string | null>(null);
   const [activeCategoryForm, setActiveCategoryForm] = useState<boolean | null>(
     null,
@@ -42,9 +41,18 @@ export function ExpensesCategories() {
     e,
   ) => {
     e.preventDefault();
-    // console.log(categoryFormData);
-    const createdCategory = await addCategory(categoryFormData);
-    console.log(createdCategory);
+    const created = await addExpensesCategory(categoryFormData);
+
+    if (!created) return toast.error("Error al crear categoría");
+
+    toast.success("Categoría creada correctamente");
+    setCategoryFormData({
+      transaction_type: "expense",
+      name: "",
+      description: "",
+      color: "#F87171",
+    });
+    setActiveCategoryForm(false);
   };
 
   const handleCategoryChange: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -84,8 +92,19 @@ export function ExpensesCategories() {
           handleChange={handleCategoryChange}
           handleSubmit={handleCategorySubmit}
         />
-        <div>
-          <button form="new-category">Guardar</button>
+        <div className="flex justify-end gap-2">
+          <button
+            onClick={() => setActiveCategoryForm(false)}
+            className="hover:bg-red-200 flex items-center gap-1 text-sm cursor-pointer rounded py-1 px-2 transition-all duration-100"
+          >
+            Cancelar
+          </button>
+          <button
+            form="new-category"
+            className="bg-emerald-500 hover:bg-emerald-400 flex items-center gap-1 text-sm cursor-pointer rounded py-1 px-2 transition-all duration-100"
+          >
+            Guardar
+          </button>
         </div>
       </div>
       <main>

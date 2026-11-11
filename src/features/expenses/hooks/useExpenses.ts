@@ -13,8 +13,11 @@ import {
   updateExpense,
 } from "../expenseService";
 import { defaultExpenseCategory } from "../../../lib/defaultCategories";
+import type { NewCategoryFormData } from "../../categories/types";
+import { useCategories } from "../../categories/useCategories";
 
 export function useExpenses() {
+  const { addCategory } = useCategories();
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [expensesByDay, setExpensesByDay] = useState<DailyExpense[]>([]);
   const [expensesByCategory, setExpensesByCategory] = useState<
@@ -125,6 +128,14 @@ export function useExpenses() {
     }
   }
 
+  async function addExpensesCategory(data: NewCategoryFormData) {
+    const createdCategory = await addCategory(data);
+    if (typeof createdCategory === "boolean") return createdCategory;
+
+    loadExpenses();
+    return createdCategory.created;
+  }
+
   return {
     expenses,
     expensesByDay,
@@ -132,6 +143,7 @@ export function useExpenses() {
     update,
     remove,
     add,
+    addExpensesCategory,
     loading,
     error,
   };
