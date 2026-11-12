@@ -5,21 +5,15 @@ import {
 } from "react";
 import { cleanDatetimeInput, formatDatetimeInput } from "../../../lib/dates";
 import { cleanCurrency, formatCurrency } from "../../../lib/formatter";
-import { PenLine, X } from "lucide-react";
 import toast from "react-hot-toast";
 import type { NewExpenseFormData } from "../types";
 
 interface NewExpenseFormProps {
-  activeForm: boolean;
   add: (data: NewExpenseFormData) => Promise<boolean>;
   cancelForm: () => void;
 }
 
-export function NewExpenseForm({
-  activeForm,
-  add,
-  cancelForm,
-}: NewExpenseFormProps) {
+export function NewExpenseForm({ add, cancelForm }: NewExpenseFormProps) {
   const [formData, setFormData] = useState<NewExpenseFormData>({
     date: Date.now(),
     amount: 0,
@@ -58,94 +52,73 @@ export function NewExpenseForm({
   };
 
   const styles = {
-    container: "grid grid-cols-2 items-center",
-    label: "text-sm text-stone-700",
+    container: "grid grid-cols-1 items-center",
+    label: "text-xs text-stone-500",
     input:
-      "text-sm text-stone-600 border border-stone-300 bg-stone-50 rounded-md p-0.5",
+      "text-sm text-stone-600 border border-stone-300 bg-stone-100 rounded-md p-1.5",
     button:
       "flex items-center gap-1 text-sm cursor-pointer rounded py-1 px-2 transition-all duration-100",
   };
 
   return (
-    <div
-      className={`${activeForm ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"} min-h-screen min-w-full overflow-hidden absolute top-0 left-0 z-10 flex items-center justify-center bg-stone-900/30 transition-all duration-400`}
+    <form
+      id="new-expense"
+      onSubmit={handleSubmit}
+      className="grid grid-cols-2 gap-2 py-3"
     >
-      <form
-        onSubmit={handleSubmit}
-        className="bg-emerald-100 p-6 flex flex-col gap-4 rounded-2xl"
-      >
-        <h1>Nuevo gasto</h1>
-        <div className={styles.container}>
-          <label htmlFor="amount" className={styles.label}>
-            Fecha:
-          </label>
-          <input
-            type="datetime-local"
-            id="date"
-            name="date"
-            value={formatDatetimeInput(formData.date)}
-            className={styles.input}
-            onChange={handleChange}
-          />
-        </div>
-        <div className={styles.container}>
-          <label htmlFor="amount" className={styles.label}>
-            Monto:
-          </label>
-          <input
-            type="text"
-            inputMode="numeric"
-            id="amount"
-            name="amount"
-            value={formatCurrency(formData.amount)}
-            className={styles.input}
-            onChange={handleChange}
-          />
-        </div>
-        <div className={styles.container}>
-          <label htmlFor="description" className={styles.label}>
-            Descripción:
-          </label>
-          <input
-            type="text"
-            id="description"
-            name="description"
-            value={formData.description}
-            className={styles.input}
-            onChange={handleChange}
-          />
-        </div>
-        <div className={styles.container}>
-          <label htmlFor="category" className={styles.label}>
-            Categoría:
-          </label>
-          <input
-            type="text"
-            id="category"
-            name="category"
-            value={formData.category}
-            className={styles.input}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="flex justify-end gap-2">
-          <button
-            type="button"
-            className={`${styles.button} hover:bg-red-200`}
-            onClick={cancelForm}
-          >
-            <X size={16} />
-            Cancelar
-          </button>
-          <button
-            type="submit"
-            className={`${styles.button} bg-emerald-500 hover:bg-emerald-400`}
-          >
-            <PenLine size={16} />
-            Registrar
-          </button>
-        </div>
-      </form>
-    </div>
+      <div className={styles.container}>
+        <label htmlFor="amount" className={styles.label}>
+          Fecha:
+        </label>
+        <input
+          type="datetime-local"
+          id="date"
+          name="date"
+          value={formatDatetimeInput(formData.date)}
+          className={styles.input}
+          onChange={handleChange}
+        />
+      </div>
+      <div className={styles.container}>
+        <label htmlFor="amount" className={styles.label}>
+          Monto:
+        </label>
+        <input
+          type="text"
+          inputMode="numeric"
+          id="amount"
+          name="amount"
+          value={formatCurrency(formData.amount)}
+          className={styles.input}
+          onChange={handleChange}
+        />
+      </div>
+      <div className={`${styles.container} col-span-2`}>
+        <label htmlFor="description" className={styles.label}>
+          Descripción:
+        </label>
+        <input
+          type="text"
+          id="description"
+          name="description"
+          value={formData.description}
+          className={styles.input}
+          onChange={handleChange}
+        />
+      </div>
+      {/* <div className={styles.container}>
+        <label htmlFor="category" className={styles.label}>
+          Categoría:
+        </label>
+        <input
+          type="text"
+          id="category"
+          name="category"
+          value={formData.category}
+          className={styles.input}
+          onChange={handleChange}
+        />
+      </div> */}
+    </form>
   );
 }

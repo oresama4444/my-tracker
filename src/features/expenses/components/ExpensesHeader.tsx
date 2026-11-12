@@ -1,4 +1,4 @@
-import { BadgeDollarSign, Plus } from "lucide-react";
+import { BadgeDollarSign, PenLine, Plus, X } from "lucide-react";
 import { useState } from "react";
 import { NewExpenseForm } from "./NewExpenseForm";
 import { useExpensesContext } from "../context/ExpensesContext";
@@ -6,6 +6,11 @@ import { useExpensesContext } from "../context/ExpensesContext";
 export function ExpensesHeader() {
   const { add } = useExpensesContext();
   const [activeForm, setActiveForm] = useState<boolean>(false);
+
+  const styles = {
+    button:
+      "flex items-center gap-1 text-sm cursor-pointer rounded py-1 px-2 transition-all duration-100",
+  };
 
   return (
     <header className="mx-auto p-2 flex items-center gap-4 max-w-4xl">
@@ -30,11 +35,33 @@ export function ExpensesHeader() {
           <Plus size={18} />
         </button>
       </div>
-      <NewExpenseForm
-        activeForm={activeForm}
-        add={add}
-        cancelForm={() => setActiveForm(false)}
-      />
+      <div
+        className={`${activeForm ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"} max-h-screen min-w-full overflow-hidden absolute inset-0 z-10 flex items-center justify-center transition-all duration-400`}
+      >
+        <div className="absolute inset-0 bg-black/20 backdrop-blur-xs"></div>
+        <div className="z-10 w-full max-w-md rounded-2xl bg-stone-50 p-6 shadow-xl">
+          <h1>Nuevo gasto</h1>
+          <NewExpenseForm add={add} cancelForm={() => setActiveForm(false)} />
+          <div className="flex justify-end gap-2">
+            <button
+              type="button"
+              className={`${styles.button} hover:bg-red-200`}
+              onClick={() => setActiveForm(false)}
+            >
+              <X size={16} />
+              Cancelar
+            </button>
+            <button
+              form="new-expense"
+              type="submit"
+              className={`${styles.button} bg-emerald-500 hover:bg-emerald-400`}
+            >
+              <PenLine size={16} />
+              Registrar
+            </button>
+          </div>
+        </div>
+      </div>
     </header>
   );
 }
