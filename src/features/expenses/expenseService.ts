@@ -1,12 +1,17 @@
 import { api } from "../../lib/api";
 import type {
   ExpenseUpdateFormData,
+  GetExpenseCategoriesResponse,
   GetExpensesResponse,
   NewExpenseFormData,
 } from "./types";
 
 export function getExpenses(): Promise<GetExpensesResponse> {
   return api<GetExpensesResponse>("/expenses");
+}
+
+export function getExpenseCategories(): Promise<GetExpenseCategoriesResponse> {
+  return api<GetExpenseCategoriesResponse>("/expenses/categories");
 }
 
 export async function updateExpense(

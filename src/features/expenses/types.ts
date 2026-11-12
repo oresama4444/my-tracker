@@ -38,6 +38,10 @@ export interface GetExpensesResponse {
   };
 }
 
+export interface GetExpenseCategoriesResponse {
+  expenseCategories: Category[];
+}
+
 export interface NewExpenseFormData {
   date: number;
   amount: number;

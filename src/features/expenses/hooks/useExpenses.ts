@@ -9,15 +9,18 @@ import type {
 import {
   createExpense,
   deleteExpense,
+  getExpenseCategories,
   getExpenses,
   updateExpense,
 } from "../expenseService";
 import { defaultExpenseCategory } from "../../../lib/defaultCategories";
 import type { NewCategoryFormData } from "../../categories/types";
 import { useCategories } from "../../categories/useCategories";
+import type { Category } from "../../../types/common";
 
 export function useExpenses() {
   const { addCategory } = useCategories();
+  const [expenseCategories, setExpenseCategories] = useState<Category[]>();
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [expensesByDay, setExpensesByDay] = useState<DailyExpense[]>([]);
   const [expensesByCategory, setExpensesByCategory] = useState<
@@ -52,8 +55,27 @@ export function useExpenses() {
     }
   }
 
+  async function loadExpenseCategories() {
+    try {
+      setLoading(true);
+
+      const { expenseCategories } = await getExpenseCategories();
+
+      setExpenseCategories(expenseCategories);
+    } catch (error) {
+      setError(
+        error instanceof Error
+          ? error
+          : new Error("Error al cargar los gastos"),
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
+
   useEffect(() => {
     loadExpenses();
+    loadExpenseCategories();
   }, []);
 
   async function update(
@@ -140,6 +162,7 @@ export function useExpenses() {
     expenses,
     expensesByDay,
     expensesByCategory,
+    expenseCategories,
     update,
     remove,
     add,
