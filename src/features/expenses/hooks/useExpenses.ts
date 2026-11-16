@@ -90,7 +90,8 @@ export function useExpenses() {
     if (data.description !== expense.description)
       newExpense.description = data.description;
     if (data.location !== expense.location) newExpense.location = data.location;
-    if (data.category !== expense.category) newExpense.category = data.category;
+    if (data.category_id !== expense.category_id)
+      newExpense.category_id = data.category_id;
     if (data.subcategory !== expense.subcategory)
       newExpense.subcategory = data.subcategory;
     if (data.account !== expense.account) newExpense.account = data.account;
@@ -158,6 +159,14 @@ export function useExpenses() {
     return createdCategory.created;
   }
 
+  function getCategoryName(categoryId: string): string | undefined {
+    const foundCategory = expenseCategories?.find(
+      (category) => category.id === categoryId,
+    );
+
+    return foundCategory?.name;
+  }
+
   return {
     expenses,
     expensesByDay,
@@ -167,6 +176,7 @@ export function useExpenses() {
     remove,
     add,
     addExpensesCategory,
+    getCategoryName,
     loading,
     error,
   };

@@ -6,7 +6,7 @@ export interface Expense {
   amount: number;
   description: string;
   location?: string;
-  category?: string;
+  category_id?: string;
   subcategory?: string;
   account?: string;
 }
@@ -47,7 +47,7 @@ export interface NewExpenseFormData {
   amount: number;
   description: string;
   location?: string;
-  category?: string;
+  category_id?: string;
   subcategory?: string;
   account?: string;
 }
@@ -56,7 +56,7 @@ export interface ExpenseUpdateFormData {
   amount?: number;
   description?: string;
   location?: string;
-  category?: string;
+  category_id?: string;
   subcategory?: string;
   account?: string;
 }
