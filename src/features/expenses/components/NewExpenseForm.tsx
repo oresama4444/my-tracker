@@ -4,9 +4,15 @@ import {
   type SubmitEventHandler,
 } from "react";
 import { cleanDatetimeInput, formatDatetimeInput } from "../../../lib/dates";
-import { cleanCurrency, formatCurrency } from "../../../lib/formatter";
-import toast from "react-hot-toast";
+import {
+  capitalizeWord,
+  cleanCurrency,
+  formatCurrency,
+} from "../../../lib/formatter";
 import type { NewExpenseFormData } from "../types";
+import { useExpensesContext } from "../context/ExpensesContext";
+import toast from "react-hot-toast";
+import { ChevronDown } from "lucide-react";
 
 interface NewExpenseFormProps {
   add: (data: NewExpenseFormData) => Promise<boolean>;
@@ -14,12 +20,14 @@ interface NewExpenseFormProps {
 }
 
 export function NewExpenseForm({ add, cancelForm }: NewExpenseFormProps) {
+  const { expenseCategories, getCategoryName } = useExpensesContext();
   const [formData, setFormData] = useState<NewExpenseFormData>({
     date: Date.now(),
     amount: 0,
     description: "",
-    category: "",
+    category_id: "",
   });
+  const [activeCategoryMenu, setActiveCategoryMenu] = useState<boolean>(false);
 
   const handleSubmit: SubmitEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
@@ -32,7 +40,7 @@ export function NewExpenseForm({ add, cancelForm }: NewExpenseFormProps) {
       date: Date.now(),
       amount: 0,
       description: "",
-      category: "",
+      category_id: "",
     });
     cancelForm();
   };
@@ -106,19 +114,61 @@ export function NewExpenseForm({ add, cancelForm }: NewExpenseFormProps) {
           onChange={handleChange}
         />
       </div>
-      {/* <div className={styles.container}>
-        <label htmlFor="category" className={styles.label}>
-          Categoría:
-        </label>
-        <input
-          type="text"
-          id="category"
-          name="category"
-          value={formData.category}
-          className={styles.input}
-          onChange={handleChange}
-        />
-      </div> */}
+      <div className={`${styles.container} col-span-2`}>
+        <span className={styles.label}>Categoría:</span>
+        <div
+          onClick={() => setActiveCategoryMenu((prev) => !prev)}
+          className={`${styles.input} flex justify-end items-center gap-1 cursor-pointer relative`}
+        >
+          <p>
+            {formData.category_id
+              ? capitalizeWord(getCategoryName(formData.category_id))
+              : "General"}
+          </p>
+          <ChevronDown />
+          <div
+            className={`${activeCategoryMenu ? "max-h-96 opacity-100 pointer-events-auto" : " max-h-0 opacity-0 pointer-events-none"} absolute min-w-60 top-full mt-1 p-2 rounded-lg bg-stone-400/80 text-stone-100 flex flex-col gap-1 items-end z-20 cursor-auto transition-all duration-300`}
+          >
+            <div className="w-full">
+              <label
+                onClick={() => setActiveCategoryMenu(false)}
+                htmlFor="general"
+                className="hover:bg-stone-500/80 cursor-pointer flex gap-1 items-center justify-end rounded p-1 transition-all duration-200"
+              >
+                General
+              </label>
+              <input
+                type="radio"
+                name="category_id"
+                id="general"
+                value=""
+                onChange={handleChange}
+                defaultChecked
+                className="hidden"
+              />
+            </div>
+            {expenseCategories?.map((category) => (
+              <div key={category.id} className="w-full">
+                <label
+                  onClick={() => setActiveCategoryMenu(false)}
+                  htmlFor={category.id}
+                  className="hover:bg-stone-500/80 cursor-pointer flex gap-1 items-center justify-end rounded p-1 transition-all duration-200"
+                >
+                  {capitalizeWord(category.name)}
+                </label>
+                <input
+                  type="radio"
+                  name="category_id"
+                  id={category.id}
+                  value={category.id}
+                  onChange={handleChange}
+                  className="hidden"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </form>
   );
 }

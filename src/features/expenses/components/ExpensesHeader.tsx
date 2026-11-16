@@ -36,10 +36,10 @@ export function ExpensesHeader() {
         </button>
       </div>
       <div
-        className={`${activeForm ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"} max-h-screen min-w-full overflow-hidden absolute inset-0 z-10 flex items-center justify-center transition-all duration-400`}
+        className={`${activeForm ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"} max-h-screen min-w-full overflow-hidden absolute inset-0 z-20 flex items-center justify-center transition-all duration-400`}
       >
         <div className="absolute inset-0 bg-black/20 backdrop-blur-xs"></div>
-        <div className="z-10 w-full max-w-md rounded-2xl bg-stone-50 p-6 shadow-xl">
+        <div className="z-10 w-md rounded-2xl bg-stone-50 p-6 shadow-xl">
           <h1>Nuevo gasto</h1>
           <NewExpenseForm add={add} cancelForm={() => setActiveForm(false)} />
           <div className="flex justify-end gap-2">
