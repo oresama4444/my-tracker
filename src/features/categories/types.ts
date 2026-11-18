@@ -1,5 +1,5 @@
 import type { ChangeEventHandler, SubmitEventHandler } from "react";
-import type { TransactionType } from "../../types/common";
+import type { Category, TransactionType } from "../../types/common";
 
 export interface NewCategoryFormData {
   transaction_type: TransactionType;
@@ -34,4 +34,11 @@ export interface NewCategoryFormProps {
   formData: NewCategoryFormData;
   handleChange: ChangeEventHandler;
   handleSubmit: SubmitEventHandler;
+}
+
+export interface CategoriesSelectorProps {
+  categories: Category[] | undefined;
+  categoryId: string | undefined;
+  getCategoryName: (categoryId: string) => string | undefined;
+  handleChange: ChangeEventHandler;
 }
