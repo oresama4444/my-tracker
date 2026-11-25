@@ -53,12 +53,12 @@ export interface NewExpenseFormData {
 }
 
 export interface ExpenseUpdateFormData {
+  date?: number;
   amount?: number;
   description?: string;
   location?: string;
   category_id?: string;
-  subcategory?: string;
-  account?: string;
+  subcategory_id?: string;
 }
 
 export interface ExpenseItemProps {
@@ -69,8 +69,6 @@ export interface ExpenseItemProps {
 
 export interface UpdateExpenseFormProps {
   expense: Expense;
-  cancelEdit: () => void;
-  isActive: boolean;
   handleUpdate: (
     expenseId: string,
     data: ExpenseUpdateFormData,

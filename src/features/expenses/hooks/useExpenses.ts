@@ -85,6 +85,8 @@ export function useExpenses() {
   ): Promise<boolean> {
     const newExpense: ExpenseUpdateFormData = {};
 
+    if (Number(data.date) !== Number(expense.date))
+      newExpense.date = Number(data.date);
     if (Number(data.amount) !== Number(expense.amount))
       newExpense.amount = Number(data.amount);
     if (data.description !== expense.description)
@@ -92,9 +94,9 @@ export function useExpenses() {
     if (data.location !== expense.location) newExpense.location = data.location;
     if (data.category_id !== expense.category_id)
       newExpense.category_id = data.category_id;
-    if (data.subcategory !== expense.subcategory)
-      newExpense.subcategory = data.subcategory;
-    if (data.account !== expense.account) newExpense.account = data.account;
+    // if (data.subcategory !== expense.subcategory)
+    //   newExpense.subcategory = data.subcategory;
+    // if (data.account !== expense.account) newExpense.account = data.account;
 
     try {
       setLoading(true);
