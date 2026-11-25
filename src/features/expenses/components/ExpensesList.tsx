@@ -27,6 +27,7 @@ export function ExpensesList() {
     if (!updated) return toast.error("Error al actualizar");
 
     toast.success("Gasto actualizado correctamente");
+    setActiveEdit(null);
   };
 
   const handleDelete = async (id: string) => {
