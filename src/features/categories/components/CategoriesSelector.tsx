@@ -8,6 +8,7 @@ export function CategoriesSelector({
   categoryId,
   getCategoryName,
   handleChange,
+  inputId,
 }: CategoriesSelectorProps) {
   const [activeMenu, setActiveMenu] = useState<boolean>(false);
 
@@ -27,7 +28,7 @@ export function CategoriesSelector({
           <div className="w-full">
             <label
               onClick={() => setActiveMenu(false)}
-              htmlFor="general"
+              htmlFor={`general${inputId ? `-${inputId}` : ""}`}
               className="hover:bg-stone-500/80 cursor-pointer flex gap-1 items-center justify-end rounded p-1 transition-all duration-200"
             >
               General
@@ -35,7 +36,7 @@ export function CategoriesSelector({
             <input
               type="radio"
               name="category_id"
-              id="general"
+              id={`general${inputId ? `-${inputId}` : ""}`}
               value=""
               onChange={handleChange}
               defaultChecked
@@ -46,7 +47,7 @@ export function CategoriesSelector({
             <div key={category.id} className="w-full">
               <label
                 onClick={() => setActiveMenu(false)}
-                htmlFor={category.id}
+                htmlFor={inputId ? `${category.id}-${inputId}` : category.id}
                 className="hover:bg-stone-500/80 cursor-pointer flex gap-1 items-center justify-end rounded p-1 transition-all duration-200"
               >
                 {capitalizeWord(category.name)}
@@ -54,7 +55,7 @@ export function CategoriesSelector({
               <input
                 type="radio"
                 name="category_id"
-                id={category.id}
+                id={inputId ? `${category.id}-${inputId}` : category.id}
                 value={category.id}
                 onChange={handleChange}
                 className="hidden"
