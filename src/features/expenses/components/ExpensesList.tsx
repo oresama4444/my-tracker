@@ -3,7 +3,7 @@ import type { Expense, ExpenseUpdateFormData } from "../types";
 import { getLongDate } from "../../../lib/dates";
 import { UpdateExpenseForm } from "./UpdateExpenseForm";
 import { ExpenseItem } from "./ExpenseItem";
-import { Dot } from "lucide-react";
+import { Check, Dot, X } from "lucide-react";
 import toast from "react-hot-toast";
 import { useExpensesContext } from "../context/ExpensesContext";
 
@@ -39,6 +39,11 @@ export function ExpensesList() {
 
   const cancelEdit = () => setActiveEdit(null);
 
+  const styles = {
+    button:
+      "flex items-center gap-1 text-sm cursor-pointer rounded py-1 px-2 transition-all duration-100",
+  };
+
   return (
     <section className="mx-auto p-2 flex flex-col items-center gap-4 max-w-4xl">
       {expensesByDay.map((dailyExpenses) => (
@@ -64,12 +69,30 @@ export function ExpensesList() {
                   handleEdit={handleEdit}
                   handleDelete={handleDelete}
                 />
-                <UpdateExpenseForm
-                  expense={expense}
-                  handleUpdate={handleUpdate}
-                  cancelEdit={cancelEdit}
-                  isActive={expense.id === activeEdit}
-                />
+                <div
+                  className={`${expense.id === activeEdit ? "max-h-96 opacity-100 pointer-events-auto" : " max-h-0 opacity-0 pointer-events-none"} transition-all duration-200 bg-stone-50 rounded-xl`}
+                >
+                  <UpdateExpenseForm
+                    expense={expense}
+                    handleUpdate={handleUpdate}
+                  />
+                  <div className="px-6 py-4 flex justify-end gap-4">
+                    <button
+                      className={`${styles.button} hover:bg-stone-100`}
+                      onClick={cancelEdit}
+                    >
+                      <X size={18} />
+                      Cancelar
+                    </button>
+                    <button
+                      className={`${styles.button} bg-emerald-400 hover:bg-emerald-300`}
+                      form={`expense-form-${expense.id}`}
+                    >
+                      <Check size={18} />
+                      Guardar
+                    </button>
+                  </div>
+                </div>
               </Fragment>
             ))}
           </div>

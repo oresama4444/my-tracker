@@ -40,5 +40,6 @@ export interface CategoriesSelectorProps {
   categories: Category[] | undefined;
   categoryId: string | undefined;
   getCategoryName: (categoryId: string) => string | undefined;
-  handleChange: ChangeEventHandler;
+  handleChange: ChangeEventHandler<HTMLInputElement>;
+  inputId?: string;
 }
